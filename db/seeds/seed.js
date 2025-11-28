@@ -1,6 +1,6 @@
 const db = require("../connection");
 const format = require("pg-format");
-const createLookupObject = require("./utils.js");
+const { createLookupObject, connectReactions } = require("./utils.js");
 
 const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
   return db
@@ -59,7 +59,14 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
     .then(() => {
       return db.query(`CREATE TABLE emojis (
         emoji_id SERIAL PRIMARY KEY,
-        emoji varchar(255) NOT NULL)`);
+        emoji varchar(255) NOT NULL);`);
+    })
+    .then(() => {
+      return db.query(`CREATE TABLE emoji_article_user (
+        emoji_article_user_id SERIAL PRIMARY KEY,
+        emoji_id int REFERENCES emojis(emoji_id),
+        username varchar(255) REFERENCES users(username),
+        article_id int REFERENCES articles(article_id));`);
     })
     .then(() => {
       return db.query(
@@ -120,6 +127,16 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
         )
       );
     });
+  //.then(() => {
+  //  const articleLookup = createLookupObject();
+  //  const emojiLookup = createLookupObject();
+  //  db.query(
+  //    format(
+  //      `INSERT INTO emoji_article_user VALUES %L`,
+  //      connectReactions(articleData)
+  //    )
+  //  );
+  //});
 };
 
 module.exports = seed;

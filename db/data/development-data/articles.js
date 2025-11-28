@@ -8,6 +8,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700",
+    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
   },
   {
     title: "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
@@ -18,6 +19,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "22 Amazing open source React projects",
@@ -28,6 +30,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "Making sense of Redux",
@@ -38,6 +41,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/4974912/pexels-photo-4974912.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "Please stop worrying about Angular 3",
@@ -48,6 +52,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/14011035/pexels-photo-14011035.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title:
@@ -59,6 +64,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "Using React Native: One Year Later",
@@ -69,6 +75,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/6424586/pexels-photo-6424586.jpeg?w=700&h=700",
+    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
   },
   {
     title: "Express.js: A Server-Side JavaScript Framework",
@@ -79,6 +86,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/11035482/pexels-photo-11035482.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "Learn HTML5, CSS3, and Responsive WebSite Design in One Go",
@@ -89,6 +97,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1591061/pexels-photo-1591061.jpeg?w=700&h=700",
+    reactions: [
+      { username: "jessjelly", emoji: "&#128514;" },
+      { username: "tickle112", emoji: "&#128077;" },
+    ],
   },
   {
     title:
@@ -100,6 +112,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/11035481/pexels-photo-11035481.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "Designing Better JavaScript APIs",
@@ -110,6 +123,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/5483071/pexels-photo-5483071.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "The battle for Node.js security has only begun",
@@ -120,6 +134,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/10845119/pexels-photo-10845119.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "What does Jose Mourinho's handwriting say about his personality?",
@@ -130,6 +145,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?w=700&h=700",
+    reactions: [{ username: "jessjelly", emoji: "&#128514;" }],
   },
   {
     title: "Who Will Manage Your Club in 2021?",
@@ -140,6 +156,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/209841/pexels-photo-209841.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "Why do England managers keep making the same mistakes?",
@@ -150,6 +167,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/262524/pexels-photo-262524.jpeg?w=700&h=700",
+    reactions: [
+      { username: "jessjelly", emoji: "&#128514;" },
+      { username: "weegembump", emoji: "&#128546;" },
+    ],
   },
   {
     title: "History of FC Barcelona",
@@ -160,6 +181,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/102448/pexels-photo-102448.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "Which current Premier League manager was the best player?",
@@ -170,6 +192,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/47343/the-ball-stadion-horn-corner-47343.jpeg?w=700&h=700",
+    reactions: [],
   },
   {
     title: "The People Tracking Every Touch, Pass And Tackle in the World Cup",
@@ -180,6 +203,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1884576/pexels-photo-1884576.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "Who are the most followed clubs and players on Instagram?",
@@ -190,6 +214,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/685382/pexels-photo-685382.jpeg?w=700&h=700",
+    reactions: [],
   },
   {
     title: "History of Football",
@@ -200,6 +225,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "Agility Training Drills For Football Players",
@@ -210,6 +236,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/3448250/pexels-photo-3448250.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "Defensive Metrics: Measuring the Intensity of a High Press",
@@ -220,6 +247,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/906073/pexels-photo-906073.jpeg?w=700&h=700",
+    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
   },
   {
     title: "Sunday league football",
@@ -230,6 +258,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/774321/pexels-photo-774321.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "Game of talents: management lessons from top football coaches",
@@ -240,6 +269,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/168872/pexels-photo-168872.jpeg?w=700&h=700",
+    reactions: [],
   },
   {
     title: "Sweet potato & butternut squash soup with lemon & garlic toast",
@@ -250,6 +280,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title: "HOW COOKING HAS CHANGED US",
@@ -260,6 +291,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "Thanksgiving Drinks for Everyone",
@@ -270,6 +302,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?w=700&h=700",
+    reactions: [
+      { username: "weegembump", emoji: "&#128546;" },
+      { username: "happyamy2016", emoji: "&#128515;" },
+    ],
   },
   {
     title: "High Altitude Cooking",
@@ -280,6 +316,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/691114/pexels-photo-691114.jpeg?w=700&h=700",
+    reactions: [
+      { username: "jessjelly", emoji: "&#128514;" },
+      { username: "cooljmessy", emoji: "&#128559;" },
+    ],
   },
   {
     title: "A BRIEF HISTORY OF FOOD—NO BIG DEAL",
@@ -290,6 +330,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/357743/pexels-photo-357743.jpeg?w=700&h=700",
+    reactions: [{ username: "happyamy2016", emoji: "&#128515;" }],
   },
   {
     title:
@@ -301,6 +342,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/175753/pexels-photo-175753.jpeg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "What to Cook This Week",
@@ -311,6 +353,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?w=700&h=700",
+    reactions: [
+      { username: "tickle112", emoji: "&#128077;" },
+      { username: "happyamy2016", emoji: "&#128515;" },
+    ],
   },
   {
     title: "Halal food: Keeping pure and true",
@@ -321,6 +367,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/954677/pexels-photo-954677.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "Seafood substitutions are increasing",
@@ -331,6 +378,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?w=700&h=700",
+    reactions: [
+      { username: "weegembump", emoji: "&#128546;" },
+      { username: "tickle112", emoji: "&#128077;" },
+    ],
   },
   {
     title: "The Notorious MSG’s Unlikely Formula For Success",
@@ -341,6 +392,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
+    reactions: [{ username: "cooljmessy", emoji: "&#128559;" }],
   },
   {
     title: "Stone Soup",
@@ -351,6 +403,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/33242/cooking-ingredient-cuisine-kitchen.jpg?w=700&h=700",
+    reactions: [{ username: "weegembump", emoji: "&#128546;" }],
   },
   {
     title: "The vegan carnivore?",
@@ -361,6 +414,11 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/1414651/pexels-photo-1414651.jpeg?w=700&h=700",
+    reactions: [
+      { username: "jessjelly", emoji: "&#128514;" },
+      { username: "weegembump", emoji: "&#128546;" },
+      { username: "happyamy2016", emoji: "&#128515;" },
+    ],
   },
   {
     title: "TenHag the man!",
@@ -429,5 +487,10 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/774321/pexels-photo-774321.jpeg?w=700&h=700",
+    reactions: [
+      { username: "tickle112", emoji: "&#128077;" },
+      { username: "jessjelly", emoji: "&#128514;" },
+      { username: "happyamy2016", emoji: "&#128515;" },
+    ],
   },
 ];

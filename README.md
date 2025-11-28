@@ -16,6 +16,4 @@ Follow these steps to use the API
 
    `PGDATABASE = :your_dev_database_here:`
 
-   \_Not including quotations\*
-
-4.
+4. To run the seeds, run the files using the scripts listed in the

@@ -6,4 +6,13 @@ function createLookupObject(data, key, value) {
   return obj;
 }
 
-module.exports = createLookupObject;
+function connectReactions(articleData) {
+  if (articleData.length === 0) {
+    return [];
+  }
+
+  return [{ article_name: "", username: "", emoji: "" }];
+}
+
+exports.createLookupObject = createLookupObject;
+exports.connectReactions = connectReactions;
