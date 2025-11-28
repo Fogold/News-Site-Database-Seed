@@ -1,5 +1,6 @@
 const db = require("../connection");
-var format = require("pg-format");
+const format = require("pg-format");
+const createLookupObject = require("./utils.js");
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
@@ -7,21 +8,29 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       `DROP TABLE IF EXISTS comments;
        DROP TABLE IF EXISTS articles;
       DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS topics;
-
-    CREATE TABLE topics (
+      DROP TABLE IF EXISTS topics;`
+    )
+    .then(() => {
+      return Promise.all([
+        db.query(
+          `CREATE TABLE topics (
       slug varchar(255) PRIMARY KEY, 
       description varchar(255), 
       img_url varchar(1000)
-    ); 
-
-    CREATE TABLE users (
+    ); `
+        ),
+        db.query(
+          `CREATE TABLE users (
       username varchar(255) PRIMARY KEY,
       name varchar(255),
       avatar_url varchar(1000)
-    ); 
-
-    CREATE TABLE articles (
+    ); `
+        ),
+      ]);
+    })
+    .then(() => {
+      return db.query(
+        `CREATE TABLE articles (
       article_id SERIAL PRIMARY KEY,
       title varchar(255), 
       topic varchar(255) REFERENCES topics(slug), 
@@ -30,9 +39,12 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       created_at timestamp DEFAULT CURRENT_TIMESTAMP, 
       votes int DEFAULT 0, 
       article_img_url varchar(1000)
-    ); 
-
-    CREATE TABLE comments (
+    ); `
+      );
+    })
+    .then(() => {
+      return db.query(
+        `CREATE TABLE comments (
       comment_id SERIAL PRIMARY KEY,
       article_id int REFERENCES articles(article_id),
       body text,
@@ -40,7 +52,8 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       author varchar(255) REFERENCES users(username), 
       created_at timestamp DEFAULT CURRENT_TIMESTAMP
     );`
-    )
+      );
+    })
     .then(() => {
       return db.query(
         format(
@@ -78,7 +91,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       );
     })
     .then(({ rows }) => {
-      const lookupObj = createLookupObject(rows);
+      const lookupObj = createLookupObject(rows, "title", "article_id");
       return db.query(
         format(
           `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L`,
@@ -93,13 +106,5 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       );
     });
 };
-module.exports = seed;
 
-function createLookupObject(data) {
-  console.log(data);
-  const obj = {};
-  data.forEach((pair) => {
-    obj[pair.title] = pair.article_id;
-  });
-  return obj;
-}
+module.exports = seed;
