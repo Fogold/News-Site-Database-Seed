@@ -64,7 +64,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     .then(() => {
       return db.query(
         format(
-          `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L`,
+          `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING article_id, title`,
           articleData.map((article) => [
             article.title,
             article.topic,
@@ -77,11 +77,13 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
         )
       );
     })
-    .then(() => {
-      db.query(
+    .then(({ rows }) => {
+      const lookupObj = createLookupObject(rows);
+      return db.query(
         format(
-          `INSERT INTO comments (body, votes, author, created_at) VALUES %L`,
+          `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L`,
           commentData.map((comment) => [
+            lookupObj[comment.article_title],
             comment.body,
             comment.votes,
             comment.author,
@@ -92,3 +94,12 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     });
 };
 module.exports = seed;
+
+function createLookupObject(data) {
+  console.log(data);
+  const obj = {};
+  data.forEach((pair) => {
+    obj[pair.title] = pair.article_id;
+  });
+  return obj;
+}

@@ -7,6 +7,15 @@ Follow these steps to use the API
    - .env.test
    - .env.development
 
-2. In the .env.test, write "PGDATABASE = :your*test_database_here:"
-   In the .env.development, write "PGDATABASE = :your_dev_database_here:"
-   \_Not including quotations*
+2. Decide a name for both your dev database and your test database.
+
+3. In the .env.test, write
+   `PGDATABASE = :your_test_database_here:`
+
+   In the .env.development, write
+
+   `PGDATABASE = :your_dev_database_here:`
+
+   \_Not including quotations\*
+
+4.
