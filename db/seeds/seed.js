@@ -2,13 +2,15 @@ const db = require("../connection");
 const format = require("pg-format");
 const createLookupObject = require("./utils.js");
 
-const seed = ({ topicData, userData, articleData, commentData }) => {
+const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
   return db
     .query(
       `DROP TABLE IF EXISTS comments;
        DROP TABLE IF EXISTS articles;
       DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS topics;`
+      DROP TABLE IF EXISTS topics;
+      DROP TABLE IF EXISTS emojis;
+      DROP TABLE IF EXISTS emoji_article_user;`
     )
     .then(() => {
       return Promise.all([
@@ -53,6 +55,11 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       created_at timestamp DEFAULT CURRENT_TIMESTAMP
     );`
       );
+    })
+    .then(() => {
+      return db.query(`CREATE TABLE emojis (
+        emoji_id SERIAL PRIMARY KEY,
+        emoji varchar(255) NOT NULL)`);
     })
     .then(() => {
       return db.query(
@@ -102,6 +109,14 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
             comment.author,
             comment.created_at,
           ])
+        )
+      );
+    })
+    .then(() => {
+      return db.query(
+        format(
+          `INSERT INTO emojis (emoji) VALUES %L`,
+          emojiData.map((emoji) => [emoji.emoji])
         )
       );
     });
