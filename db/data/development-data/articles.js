@@ -8,7 +8,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700",
-    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
+    reactions: [{ username: "tickle122", emoji: "&#128077;" }],
   },
   {
     title: "The Rise Of Thinking Machines: How IBM's Watson Takes On The World",
@@ -75,7 +75,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/6424586/pexels-photo-6424586.jpeg?w=700&h=700",
-    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
+    reactions: [{ username: "tickle122", emoji: "&#128077;" }],
   },
   {
     title: "Express.js: A Server-Side JavaScript Framework",
@@ -99,7 +99,7 @@ module.exports = [
       "https://images.pexels.com/photos/1591061/pexels-photo-1591061.jpeg?w=700&h=700",
     reactions: [
       { username: "jessjelly", emoji: "&#128514;" },
-      { username: "tickle112", emoji: "&#128077;" },
+      { username: "tickle122", emoji: "&#128077;" },
     ],
   },
   {
@@ -247,7 +247,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/906073/pexels-photo-906073.jpeg?w=700&h=700",
-    reactions: [{ username: "tickle112", emoji: "&#128077;" }],
+    reactions: [{ username: "tickle122", emoji: "&#128077;" }],
   },
   {
     title: "Sunday league football",
@@ -354,7 +354,7 @@ module.exports = [
     article_img_url:
       "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?w=700&h=700",
     reactions: [
-      { username: "tickle112", emoji: "&#128077;" },
+      { username: "tickle122", emoji: "&#128077;" },
       { username: "happyamy2016", emoji: "&#128515;" },
     ],
   },
@@ -380,7 +380,7 @@ module.exports = [
       "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?w=700&h=700",
     reactions: [
       { username: "weegembump", emoji: "&#128546;" },
-      { username: "tickle112", emoji: "&#128077;" },
+      { username: "tickle122", emoji: "&#128077;" },
     ],
   },
   {
@@ -488,7 +488,7 @@ module.exports = [
     article_img_url:
       "https://images.pexels.com/photos/774321/pexels-photo-774321.jpeg?w=700&h=700",
     reactions: [
-      { username: "tickle112", emoji: "&#128077;" },
+      { username: "tickle122", emoji: "&#128077;" },
       { username: "jessjelly", emoji: "&#128514;" },
       { username: "happyamy2016", emoji: "&#128515;" },
     ],

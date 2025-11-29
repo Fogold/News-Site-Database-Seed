@@ -5,12 +5,12 @@ const { createLookupObject, connectReactions } = require("./utils.js");
 const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
   return db
     .query(
-      `DROP TABLE IF EXISTS comments;
-       DROP TABLE IF EXISTS articles;
-      DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS topics;
+      `DROP TABLE IF EXISTS emoji_article_user;
       DROP TABLE IF EXISTS emojis;
-      DROP TABLE IF EXISTS emoji_article_user;`
+      DROP TABLE IF EXISTS comments;
+      DROP TABLE IF EXISTS articles;
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS topics;`
     )
     .then(() => {
       return Promise.all([
@@ -64,9 +64,9 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
     .then(() => {
       return db.query(`CREATE TABLE emoji_article_user (
         emoji_article_user_id SERIAL PRIMARY KEY,
-        emoji_id int REFERENCES emojis(emoji_id),
+        article_id int REFERENCES articles(article_id),
         username varchar(255) REFERENCES users(username),
-        article_id int REFERENCES articles(article_id));`);
+        emoji_id int REFERENCES emojis(emoji_id));`);
     })
     .then(() => {
       return db.query(
@@ -126,17 +126,34 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
           emojiData.map((emoji) => [emoji.emoji])
         )
       );
+    })
+    .then(() => {
+      const articlePromise = db.query(
+        `SELECT title, article_id FROM articles;`
+      );
+      const emojiPromise = db.query(`SELECT emoji, emoji_id FROM emojis;`);
+      return Promise.all([articlePromise, emojiPromise]);
+    })
+    .then(([articleTable, emojiTable]) => {
+      console.log(articleTable.rows, emojiTable.rows);
+      const articleLookup = createLookupObject(
+        articleTable.rows,
+        "title",
+        "article_id"
+      );
+      const emojiLookup = createLookupObject(
+        emojiTable.rows,
+        "emoji",
+        "emoji_id"
+      );
+      //console.log(articleLookup, emojiLookup);
+      return db.query(
+        format(
+          `INSERT INTO emoji_article_user(article_id, username, emoji_id) VALUES %L`,
+          connectReactions(articleData, articleLookup, emojiLookup)
+        )
+      );
     });
-  //.then(() => {
-  //  const articleLookup = createLookupObject();
-  //  const emojiLookup = createLookupObject();
-  //  db.query(
-  //    format(
-  //      `INSERT INTO emoji_article_user VALUES %L`,
-  //      connectReactions(articleData)
-  //    )
-  //  );
-  //});
 };
 
 module.exports = seed;

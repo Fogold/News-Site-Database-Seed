@@ -8,7 +8,7 @@ module.exports = [
     votes: 100,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Sony Vaio; or, The Laptop",
@@ -19,7 +19,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Eight pug gifs that remind me of mitch",
@@ -30,7 +30,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Student SUES Mitch!",
@@ -41,7 +41,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "UNCOVERED: catspiracy to bring down democracy",
@@ -52,7 +52,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "A",
@@ -63,7 +63,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Z",
@@ -74,7 +74,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Does Mitch predate civilisation?",
@@ -85,7 +85,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "They're not exactly dogs, are they?",
@@ -96,7 +96,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Seven inspirational thought leaders from Manchester UK",
@@ -107,7 +107,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Am I a cat?",
@@ -118,7 +118,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Moustache",
@@ -129,7 +129,7 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
   {
     title: "Another article about Mitch",
@@ -140,6 +140,6 @@ module.exports = [
     votes: 0,
     article_img_url:
       "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    reactions: { username: "butter_bridge", emoji: "happyface" },
+    reactions: [{ username: "butter_bridge", emoji: "happyface" }],
   },
 ];
