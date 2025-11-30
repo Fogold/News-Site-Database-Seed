@@ -1,6 +1,11 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { createLookupObject, connectReactions } = require("./utils.js");
+const {
+  createLookupObject,
+  connectReactions,
+  findFavouriteTopics,
+  createColumnInsertionQuery,
+} = require("./utils.js");
 
 const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
   return db
@@ -135,7 +140,6 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
       return Promise.all([articlePromise, emojiPromise]);
     })
     .then(([articleTable, emojiTable]) => {
-      console.log(articleTable.rows, emojiTable.rows);
       const articleLookup = createLookupObject(
         articleTable.rows,
         "title",
@@ -146,13 +150,31 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
         "emoji",
         "emoji_id"
       );
-      //console.log(articleLookup, emojiLookup);
       return db.query(
         format(
           `INSERT INTO emoji_article_user(article_id, username, emoji_id) VALUES %L`,
           connectReactions(articleData, articleLookup, emojiLookup)
         )
       );
+    })
+    .then(() => {
+      const commentsPromise = db.query(`
+        SELECT comments.author, topic FROM comments
+          JOIN articles ON comments.article_id = articles.article_id
+          JOIN topics ON articles.topic = topics.slug;`);
+      const usersPromise = db.query(`SELECT * FROM users;`);
+      return Promise.all([commentsPromise, usersPromise]);
+    })
+    .then(([commentsByTopic, usersTable]) => {
+      const favTopicsLookup = findFavouriteTopics(commentsByTopic.rows);
+      const queryString = createColumnInsertionQuery(
+        "users",
+        "favourite_topic",
+        "username",
+        favTopicsLookup
+      );
+
+      return db.query(queryString);
     });
 };
 

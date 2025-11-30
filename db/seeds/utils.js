@@ -8,9 +8,6 @@ function createLookupObject(data, key, value) {
 
 function connectReactions(articleData, articleLookup, emojiLookup) {
   let returnArr = [];
-  if (articleData.length === 0) {
-    return returnArr;
-  }
   for (const article of articleData) {
     returnArr = returnArr.concat(
       article.reactions.map((reaction) => [
@@ -24,5 +21,47 @@ function connectReactions(articleData, articleLookup, emojiLookup) {
   return returnArr;
 }
 
+function findFavouriteTopics(commentTopics) {
+  const object = {};
+
+  commentTopics.forEach((comment) => {
+    if (!object[comment.author]) {
+      object[comment.author] = {};
+    }
+
+    object[comment.author][comment.topic] =
+      (object[comment.author][comment.topic] || 0) + 1;
+  });
+
+  for (const author in object) {
+    let topics = object[author];
+    let topTopic;
+    for (const topic in topics) {
+      topTopic =
+        !topTopic || topics[topic] > topics[topTopic] ? topic : topTopic;
+    }
+
+    object[author] = topTopic;
+  }
+
+  return object;
+}
+
+function createColumnInsertionQuery(
+  table,
+  newColumn,
+  associatedColumn,
+  lookupObject
+) {
+  let query = `ALTER TABLE ${table} ADD ${newColumn} varchar(255); UPDATE ${table} SET ${newColumn} = CASE ${associatedColumn} `;
+  for (const key in lookupObject) {
+    query += `WHEN '${key}' THEN '${lookupObject[key]}' `;
+  }
+  query += `ELSE NULL END;`;
+  return query;
+}
+
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
+exports.findFavouriteTopics = findFavouriteTopics;
+exports.createColumnInsertionQuery = createColumnInsertionQuery;
