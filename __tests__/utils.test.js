@@ -3,7 +3,7 @@ const {
   connectReactions,
   findFavouriteTopics,
   createColumnInsertionQuery,
-} = require("../db/seeds/utils");
+} = require("../utils");
 
 describe("createLookupObject", () => {
   test("returns an object", () => {

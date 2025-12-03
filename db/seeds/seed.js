@@ -5,7 +5,7 @@ const {
   connectReactions,
   findFavouriteTopics,
   createColumnInsertionQuery,
-} = require("./utils.js");
+} = require("../../utils.js");
 
 const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
   return db
