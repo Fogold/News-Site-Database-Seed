@@ -1,9 +1,14 @@
 const db = require("./../db/connection.js");
 
-function extractArticles() {
-  const tableExtraction = db.query(
-    `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles;`
-  );
+function extractArticles(id) {
+  const tableExtraction = !id
+    ? db.query(
+        `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles;`
+      )
+    : db.query(
+        `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles WHERE article_id = $1;`,
+        [id]
+      );
   const commentByArticleExtraction = db.query(
     `SELECT comment_id, article_id FROM comments;`
   );

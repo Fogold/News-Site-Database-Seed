@@ -46,6 +46,31 @@ describe("Articles", () => {
         });
       });
   });
+  test("GET article by ID", () => {
+    return request(app)
+      .get("/api/articles/2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        const article = body.articles[0];
+        expect(typeof article.author).toBe("string");
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.article_id).toBe("number");
+        expect(typeof article.topic).toBe("string");
+        expect(typeof article.created_at).toBe("string");
+        expect(typeof article.votes).toBe("number");
+        expect(typeof article.article_img_url).toBe("string");
+        expect(typeof article.comment_count).toBe("number");
+      });
+  });
+  test("Returns 400 error when invalid id is requested", () => {
+    return request(app)
+      .get("/api/articles/1000")
+      .expect(400)
+      .then((err) => {
+        console.log(err);
+      });
+  });
 });
 
 describe("Users", () => {
