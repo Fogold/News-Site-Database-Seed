@@ -47,3 +47,19 @@ describe("Articles", () => {
       });
   });
 });
+
+describe("Users", () => {
+  test("GET all Users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        body.users.forEach((user) => {
+          expect(typeof user.username).toBe("string");
+          expect(typeof user.name).toBe("string");
+          expect(typeof user.avatar_url).toBe("string");
+        });
+      });
+  });
+});
