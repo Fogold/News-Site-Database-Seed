@@ -173,7 +173,6 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
         "username",
         favTopicsLookup
       );
-
       return db.query(queryString);
     });
 };

@@ -1,6 +1,6 @@
 **_README_**
 
-Follow these steps to use the API
+Follow these steps to use the seeds
 
 1. In the root folder of the repo, create the following two files
 
@@ -16,4 +16,10 @@ Follow these steps to use the API
 
    `PGDATABASE = :your_dev_database_here:`
 
-4. To run the seeds, run the files using the scripts listed in the
+4. Create a file in the "db" folder called setup-dbs.sql and write the following code
+
+   DROP DATABASE IF EXISTS :your_dev_database_here:;
+   CREATE DATABASE :your_dev_database_here:;
+
+   DROP DATABASE IF EXISTS :your_test_database_here:;
+   CREATE DATABASE :your_test_database_here:;
