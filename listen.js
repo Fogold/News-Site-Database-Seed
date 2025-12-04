@@ -1,4 +1,6 @@
-const { app, port } = require("./app.js");
+const { app } = require("./app.js");
+
+const port = 8080;
 
 app.listen(port, (err) => {
   if (err) {

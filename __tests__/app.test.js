@@ -67,9 +67,7 @@ describe("Articles", () => {
     return request(app)
       .get("/api/articles/1000")
       .expect(400)
-      .then((err) => {
-        console.log(err);
-      });
+      .then((err) => {});
   });
 });
 
@@ -85,6 +83,43 @@ describe("Users", () => {
           expect(typeof user.name).toBe("string");
           expect(typeof user.avatar_url).toBe("string");
         });
+      });
+  });
+});
+
+describe("Comments", () => {
+  test("GET comments for a particular article", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        const comments = body.comments;
+        comments.forEach((comment) => {
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.article_id).toBe("number");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+        });
+      });
+  });
+
+  test("POST a comment onto an article", () => {
+    const comment = { username: "lurker", body: "abcdefghijklmnopqrstuvwxyz" };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(comment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(typeof body).toBe("object");
+        expect(typeof body.comment_id).toBe("number");
+        expect(typeof body.article_id).toBe("number");
+        expect(typeof body.author).toBe("string");
+        expect(typeof body.body).toBe("string");
+        expect(typeof body.votes).toBe("number");
+        expect(typeof body.created_at).toBe("string");
       });
   });
 });
