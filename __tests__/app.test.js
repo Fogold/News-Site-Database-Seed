@@ -85,6 +85,43 @@ describe("Articles", () => {
           });
       });
   });
+  test("returns a 400 error when requested article id is invalid", () => {
+    return request(app)
+      .get("/api/articles/wrong_index")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 error when requested article id doesn't exist", () => {
+    return request(app)
+      .get("/api/articles/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
+  test("returns a 400 error when trying to change an articles votes by 0", () => {
+    const votes = { inc_votes: 0 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(votes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+
+  test("returns a 404 error when trying to change the votes on an article with a non-existent id", () => {
+    const votes = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/9999")
+      .send(votes)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
 });
 
 describe("Users", () => {
@@ -138,23 +175,16 @@ describe("Comments", () => {
         expect(typeof body.created_at).toBe("string");
       });
   });
-});
-
-describe("Error handling", () => {
-  test("returns a 400 error when requested article id is invalid", () => {
+  test("DELETE a comment by ID", () => {
     return request(app)
-      .get("/api/articles/wrong_index")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Bad Request!");
-      });
-  });
-  test("returns a 400 error when requested article id doesn't exist", () => {
-    return request(app)
-      .get("/api/articles/9999")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Not Found!");
+      .delete("/api/comments/1")
+      .expect(200)
+      .then(() => {
+        return db.query(`SELECT comment_id FROM comments WHERE comment_id = 1`);
+      })
+      .then(({ rows }) => {
+        expect(rows.length).toBe(0);
+        return;
       });
   });
   test("returns a 400 error when requested comments are from an invalid/non existent article", () => {
@@ -185,35 +215,4 @@ describe("Error handling", () => {
         expect(body.msg).toBe("Bad Request!");
       });
   });
-
-  test("returns a 400 error when trying to change an articles votes by 0", () => {
-    const votes = { inc_votes: 0 };
-    return request(app)
-      .patch("/api/articles/1")
-      .send(votes)
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Bad Request!");
-      });
-  });
-
-  test("returns a 404 error when trying to change the votes on an article with a non-existent id", () => {
-    const votes = { inc_votes: 5 };
-    return request(app)
-      .patch("/api/articles/9999")
-      .send(votes)
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Not Found!");
-      });
-  });
-
-  //test("returns a 500 error if no other errors are flagged", () => {
-  //  return request(app)
-  //    .get("/api/articles/")
-  //    .expect(400)
-  //    .then(({ body }) => {
-  //      expect(body.msg).toBe("Bad Request!");
-  //    });
-  //});
 });

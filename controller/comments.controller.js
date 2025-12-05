@@ -1,6 +1,7 @@
 const {
   extractArticleComments,
   insertComment,
+  killComment,
 } = require("./../model/comments.model");
 
 function getArticleComments(request, response) {
@@ -23,5 +24,14 @@ function postComment(request, response) {
   });
 }
 
+function deleteComment(request, response) {
+  const { params } = request;
+
+  return killComment(params.comment_id).then(() => {
+    response.status(200).send("Deleted");
+  });
+}
+
 exports.getArticleComments = getArticleComments;
 exports.postComment = postComment;
+exports.deleteComment = deleteComment;

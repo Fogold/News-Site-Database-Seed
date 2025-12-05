@@ -8,6 +8,7 @@ const { getUsers } = require("./controller/users.controller.js");
 const {
   getArticleComments,
   postComment,
+  deleteComment,
 } = require("./controller/comments.controller.js");
 const app = express();
 const {
@@ -25,6 +26,7 @@ app.get("/api/articles/:id/comments", getArticleComments);
 app.get("/api/users", getUsers);
 app.post("/api/articles/:id/comments", postComment);
 app.patch("/api/articles/:id", patchArticleVotes);
+app.delete("/api/comments/:comment_id", deleteComment);
 
 app.use(badRequestHandler);
 app.use(pageNotFoundHandler);
