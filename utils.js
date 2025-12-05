@@ -61,7 +61,22 @@ function createColumnInsertionQuery(
   return query;
 }
 
+function addCommentCounts(articles, commentIdToArticle) {
+  const commentCount = {};
+
+  commentIdToArticle.forEach((comment) => {
+    commentCount[comment.article_id] = ++commentCount[comment.article_id] || 1;
+  });
+
+  articles.forEach((article) => {
+    article.comment_count = commentCount[article.article_id] || 0;
+  });
+
+  return articles;
+}
+
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
 exports.findFavouriteTopics = findFavouriteTopics;
 exports.createColumnInsertionQuery = createColumnInsertionQuery;
+exports.addCommentCounts = addCommentCounts;

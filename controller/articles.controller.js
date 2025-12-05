@@ -1,16 +1,23 @@
-const { extractArticles } = require("./../model/articles.model.js");
+const {
+  extractArticles,
+  updateArticleVotes,
+} = require("./../model/articles.model.js");
 
 function getArticles(request, response) {
-  return extractArticles(request.params["id"])
-    .then((rows) => {
-      if (rows.length === 0) {
-        response.status(400).send("Article does not exist!");
-      }
-      response.status(200).send({ articles: rows });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return extractArticles(request.params["id"]).then((rows) => {
+    response.status(200).send({ articles: rows });
+  });
+}
+
+function patchArticleVotes(request, response) {
+  const { body, params } = request;
+  if (isNaN(body.inc_votes) || body.inc_votes === 0 || isNaN(params.id)) {
+    return Promise.reject({ status: 400, msg: "Bad Request!" });
+  }
+  return updateArticleVotes(params.id, body.inc_votes).then((article) => {
+    response.status(202).send(article);
+  });
 }
 
 exports.getArticles = getArticles;
+exports.patchArticleVotes = patchArticleVotes;

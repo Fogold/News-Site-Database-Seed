@@ -63,11 +63,27 @@ describe("Articles", () => {
         expect(typeof article.comment_count).toBe("number");
       });
   });
-  test("Returns 400 error when invalid id is requested", () => {
-    return request(app)
-      .get("/api/articles/1000")
-      .expect(400)
-      .then((err) => {});
+  test("PATCH an article by increasing or decreasing the votes", () => {
+    return db
+      .query(`SELECT votes FROM articles WHERE article_id = 1;`)
+      .then(({ rows }) => {
+        const originalVotes = rows[0].votes;
+        return request(app)
+          .patch("/api/articles/1")
+          .send({ inc_votes: 5 })
+          .expect(202)
+          .then(({ body }) => {
+            const article = body;
+            expect(typeof article).toBe("object");
+            expect(typeof article.author).toBe("string");
+            expect(typeof article.title).toBe("string");
+            expect(typeof article.article_id).toBe("number");
+            expect(typeof article.topic).toBe("string");
+            expect(typeof article.created_at).toBe("string");
+            expect(article.votes).toBe(originalVotes + 5);
+            expect(typeof article.article_img_url).toBe("string");
+          });
+      });
   });
 });
 
@@ -122,4 +138,82 @@ describe("Comments", () => {
         expect(typeof body.created_at).toBe("string");
       });
   });
+});
+
+describe("Error handling", () => {
+  test("returns a 400 error when requested article id is invalid", () => {
+    return request(app)
+      .get("/api/articles/wrong_index")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 error when requested article id doesn't exist", () => {
+    return request(app)
+      .get("/api/articles/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
+  test("returns a 400 error when requested comments are from an invalid/non existent article", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 error when a comment is posted to an invalid/non-existent article", () => {
+    const comment = { username: "lurker", body: "abcdefghijklmnopqrstuvwxyz" };
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send(comment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+  test("returns a 400 error when a comment is posted without either a body or a username", () => {
+    const comment = { username: "", body: "" };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(comment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+
+  test("returns a 400 error when trying to change an articles votes by 0", () => {
+    const votes = { inc_votes: 0 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(votes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+
+  test("returns a 404 error when trying to change the votes on an article with a non-existent id", () => {
+    const votes = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/9999")
+      .send(votes)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
+
+  //test("returns a 500 error if no other errors are flagged", () => {
+  //  return request(app)
+  //    .get("/api/articles/")
+  //    .expect(400)
+  //    .then(({ body }) => {
+  //      expect(body.msg).toBe("Bad Request!");
+  //    });
+  //});
 });

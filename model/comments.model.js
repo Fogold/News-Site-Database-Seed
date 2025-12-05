@@ -7,6 +7,9 @@ function extractArticleComments(id) {
       [id]
     )
     .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 400, msg: "Bad Request!" });
+      }
       rows.sort((a, b) => {
         return b.created_at - a.created_at;
       });
@@ -21,11 +24,10 @@ function insertComment(id, comment) {
       [id, comment.body, comment.username]
     )
     .then(({ rows }) => {
-      console.log(rows);
       return rows[0];
     })
     .catch((err) => {
-      console.log(err);
+      return Promise.reject({ status: 400, msg: "Bad Request!" });
     });
 }
 
