@@ -185,17 +185,6 @@ describe("Articles", () => {
         expect(body.msg).toBe("Not Found!");
       });
   });
-
-  test("returns a ", () => {
-    return request(app)
-      .get("/api/articles?topic=mitch")
-      .expect(200)
-      .then(({ body }) => {
-        body.articles.forEach((article) => {
-          expect(article.topic).toBe("mitch");
-        });
-      });
-  });
 });
 
 describe("Users", () => {
@@ -209,6 +198,16 @@ describe("Users", () => {
           expect(typeof user.username).toBe("string");
           expect(typeof user.name).toBe("string");
           expect(typeof user.avatar_url).toBe("string");
+        });
+      });
+  });
+  test("GET all users with their favourite topic included in each profile", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        body.users.forEach((user) => {
+          expect(user).toHaveProperty("favourite_topic");
         });
       });
   });

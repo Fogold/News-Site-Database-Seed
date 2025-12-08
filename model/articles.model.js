@@ -55,8 +55,6 @@ function extractArticles(article_id, query) {
       return articlesWithComments;
     })
     .catch((err) => {
-      console.log(extraction);
-      console.log(err);
       return Promise.reject({ status: 404, msg: "Not Found!" });
     });
 }

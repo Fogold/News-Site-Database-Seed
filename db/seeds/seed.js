@@ -156,24 +156,6 @@ const seed = ({ topicData, userData, articleData, commentData, emojiData }) => {
           connectReactions(articleData, articleLookup, emojiLookup)
         )
       );
-    })
-    .then(() => {
-      const commentsPromise = db.query(`
-        SELECT comments.author, topic FROM comments
-          JOIN articles ON comments.article_id = articles.article_id
-          JOIN topics ON articles.topic = topics.slug;`);
-      const usersPromise = db.query(`SELECT * FROM users;`);
-      return Promise.all([commentsPromise, usersPromise]);
-    })
-    .then(([commentsByTopic, usersTable]) => {
-      const favTopicsLookup = findFavouriteTopics(commentsByTopic.rows);
-      const queryString = createColumnInsertionQuery(
-        "users",
-        "favourite_topic",
-        "username",
-        favTopicsLookup
-      );
-      return db.query(queryString);
     });
 };
 
