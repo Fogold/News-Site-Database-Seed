@@ -176,6 +176,26 @@ describe("Articles", () => {
         });
       });
   });
+
+  test("returns a 404 if the topic can't be found", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id&order=desc&topic=false_topic")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
+
+  test("returns a ", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        body.articles.forEach((article) => {
+          expect(article.topic).toBe("mitch");
+        });
+      });
+  });
 });
 
 describe("Users", () => {
