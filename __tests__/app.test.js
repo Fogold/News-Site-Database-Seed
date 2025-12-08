@@ -3,6 +3,7 @@ const request = require("supertest");
 const seed = require("./../db/seeds/seed.js");
 const db = require("./../db/connection.js");
 const data = require("./../db/data/test-data/index.js");
+require("jest-sorted");
 
 beforeEach(() => {
   return seed(data);
@@ -122,6 +123,59 @@ describe("Articles", () => {
         expect(body.msg).toBe("Not Found!");
       });
   });
+
+  test("GET articles can accept queries to sort the data by a particular column", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSorted({
+          key: "article_id",
+          descending: true,
+        });
+      });
+  });
+
+  test("GET articles in ascending order when it is set as a query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSorted({
+          key: "article_id",
+          descending: false,
+        });
+      });
+  });
+
+  test("Returns a 404 error if the column set as a sort_by query doesn't exist in the database", () => {
+    return request(app)
+      .get("/api/articles?sort_by=non_existent_key&order=asc")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found!");
+      });
+  });
+
+  test("Returns a 400 error if the order set as a query is neither 'asc' or 'desc'", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id&order=notascordesc")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request!");
+      });
+  });
+
+  test("GET articles of a particular topic when one is put in the query", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id&order=desc&topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        body.articles.forEach((article) => {
+          expect(article.topic).toBe("mitch");
+        });
+      });
+  });
 });
 
 describe("Users", () => {
@@ -178,7 +232,7 @@ describe("Comments", () => {
   test("DELETE a comment by ID", () => {
     return request(app)
       .delete("/api/comments/1")
-      .expect(200)
+      .expect(204)
       .then(() => {
         return db.query(`SELECT comment_id FROM comments WHERE comment_id = 1`);
       })

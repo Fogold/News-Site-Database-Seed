@@ -28,7 +28,7 @@ function deleteComment(request, response) {
   const { params } = request;
 
   return killComment(params.comment_id).then(() => {
-    response.status(200).send("Deleted");
+    response.status(204).send("Deleted");
   });
 }
 

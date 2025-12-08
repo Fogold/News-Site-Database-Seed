@@ -4,7 +4,7 @@ const {
 } = require("./../model/articles.model.js");
 
 function getArticles(request, response) {
-  return extractArticles(request.params["id"]).then((rows) => {
+  return extractArticles(request.params["id"], request.query).then((rows) => {
     response.status(200).send({ articles: rows });
   });
 }

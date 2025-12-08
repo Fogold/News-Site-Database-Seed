@@ -10,6 +10,6 @@ function pageNotFoundHandler(err, request, response, next) {
   response.status(err.status).send(err);
 }
 
+exports.pageNotFoundHandler = pageNotFoundHandler;
 exports.serverErrorHandler = serverErrorHandler;
 exports.badRequestHandler = badRequestHandler;
-exports.pageNotFoundHandler = pageNotFoundHandler;

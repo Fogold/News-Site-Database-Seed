@@ -2,17 +2,44 @@ const { articleData } = require("../db/data/test-data/index.js");
 const db = require("./../db/connection.js");
 const { addCommentCounts } = require("./../utils.js");
 
-function extractArticles(id) {
+function extractArticles(article_id, query) {
+  const id = article_id || null;
+  const topic = query.topic || null;
+  const column = query.sort_by || "created_at";
+  const order = query.order || "desc";
+
+  const validColumns = {
+    article_id: true,
+    author: true,
+    topic: true,
+    title: true,
+    created_at: true,
+    votes: true,
+  };
+
   if (id && isNaN(id)) {
     return Promise.reject({ status: 400, msg: "Bad Request!" });
   }
-
-  let extraction = `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles;`;
-  if (id) {
-    extraction = extraction.slice(0, -1) + ` WHERE article_id = $1;`;
+  if (order && order !== "asc" && order !== "desc") {
+    return Promise.reject({ status: 400, msg: "Bad Request!" });
+  }
+  if (column && !validColumns[column]) {
+    return Promise.reject({ status: 404, msg: "Not Found!" });
   }
 
-  const tableExtraction = db.query(extraction, id ? [id] : null);
+  let parameters = null;
+  let extraction = `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles`;
+  if (id) {
+    parameters = [id];
+    extraction += ` WHERE article_id = $1`;
+  } else if (topic) {
+    parameters = [topic];
+    extraction += ` WHERE topic = $1`;
+  }
+
+  extraction += ` ORDER BY ${column} ${order};`;
+
+  const tableExtraction = db.query(extraction, parameters);
   const commentByArticleExtraction = db.query(
     `SELECT comment_id, article_id FROM comments;`
   );
@@ -21,10 +48,6 @@ function extractArticles(id) {
     .then(([table, comments]) => {
       const articlesWithComments = addCommentCounts(table.rows, comments.rows);
 
-      articlesWithComments.sort((a, b) => {
-        return b.created_at - a.created_at;
-      });
-
       if (articlesWithComments.length === 0) {
         return Promise.reject({ status: 404, msg: "Not Found!" });
       }
@@ -32,6 +55,8 @@ function extractArticles(id) {
       return articlesWithComments;
     })
     .catch((err) => {
+      console.log(extraction);
+      console.log(err);
       return Promise.reject({ status: 404, msg: "Not Found!" });
     });
 }

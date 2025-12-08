@@ -75,8 +75,13 @@ function addCommentCounts(articles, commentIdToArticle) {
   return articles;
 }
 
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
 exports.findFavouriteTopics = findFavouriteTopics;
 exports.createColumnInsertionQuery = createColumnInsertionQuery;
 exports.addCommentCounts = addCommentCounts;
+exports.isEmptyObject = isEmptyObject;
