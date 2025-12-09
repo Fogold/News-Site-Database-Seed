@@ -21,6 +21,32 @@ function connectReactions(articleData, articleLookup, emojiLookup) {
   return returnArr;
 }
 
+function addReactions(articles, reactionTable) {
+  reactionLookup = {};
+
+  reactionTable.forEach((reaction) => {
+    if (!reactionLookup[reaction.article_id]) {
+      reactionLookup[reaction.article_id] = [
+        { username: reaction.username, emoji: reaction.emoji },
+      ];
+    } else {
+      reactionLookup[reaction.article_id].push({
+        username: reaction.username,
+        emoji: reaction.emoji,
+      });
+    }
+  });
+  articles.forEach((article) => {
+    if (reactionLookup[article.article_id]) {
+      article.reactions = reactionLookup[article.article_id];
+    } else {
+      article.reactions = [];
+    }
+  });
+
+  return articles;
+}
+
 function findFavouriteTopics(commentTopics) {
   const object = {};
 
@@ -81,6 +107,7 @@ function isEmptyObject(obj) {
 
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
+exports.addReactions = addReactions;
 exports.findFavouriteTopics = findFavouriteTopics;
 exports.createColumnInsertionQuery = createColumnInsertionQuery;
 exports.addCommentCounts = addCommentCounts;

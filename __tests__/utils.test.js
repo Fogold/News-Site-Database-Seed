@@ -3,6 +3,7 @@ const {
   connectReactions,
   findFavouriteTopics,
   createColumnInsertionQuery,
+  addReactions,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -394,5 +395,105 @@ describe("createColumnInsertionQuery", () => {
     expect(result).toBe(
       `ALTER TABLE articles ADD colour varchar(255); UPDATE articles SET colour = CASE topic WHEN 'cooking' THEN 'blue' WHEN 'coding' THEN 'green' ELSE NULL END;`
     );
+  });
+});
+
+describe("addReactions", () => {
+  test("returns an Array", () => {
+    expect(Array.isArray(addReactions([], []))).toBe(true);
+  });
+  test("returns an array of objects", () => {
+    const result = addReactions([], []);
+    result.forEach((article) => {
+      expect(typeof article).toEqual("object");
+    });
+  });
+  test("all articles have a reactions key", () => {
+    const articleData = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: "2020-07-09T20:11:00.000Z",
+        votes: 105,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      },
+    ];
+    const reactionData = [
+      {
+        article_id: 1,
+        username: "butter_bridge",
+        emoji: "happyface",
+      },
+    ];
+
+    const result = addReactions(articleData, reactionData);
+
+    result.forEach((article) => {
+      expect(article).toHaveProperty("reactions");
+    });
+  });
+  test("all articles have a key of reactions with the value of an array of objects", () => {
+    const articleData = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: "2020-07-09T20:11:00.000Z",
+        votes: 105,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      },
+    ];
+    const reactionData = [
+      {
+        article_id: 1,
+        username: "butter_bridge",
+        emoji: "happyface",
+      },
+    ];
+
+    const result = addReactions(articleData, reactionData);
+
+    result.forEach((article) => {
+      expect(Array.isArray(article.reactions)).toBe(true);
+      expect(typeof article.reactions[0]).toBe("object");
+    });
+  });
+  test("all articles have a key of reactions with the value of an array of reaction objects containing a username and emoji", () => {
+    const articleData = [
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: "2020-07-09T20:11:00.000Z",
+        votes: 105,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      },
+    ];
+    const reactionData = [
+      {
+        article_id: 1,
+        username: "butter_bridge",
+        emoji: "happyface",
+      },
+    ];
+
+    const result = addReactions(articleData, reactionData);
+
+    result.forEach((article) => {
+      expect(article.reactions[0]).toEqual({
+        username: "butter_bridge",
+        emoji: "happyface",
+      });
+    });
   });
 });

@@ -44,6 +44,7 @@ describe("Articles", () => {
           expect(typeof article.votes).toBe("number");
           expect(typeof article.article_img_url).toBe("string");
           expect(typeof article.comment_count).toBe("number");
+          expect(Array.isArray(article.reactions)).toBe(true);
         });
       });
   });
