@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <header><h1>NEWS API</h1></header>
+    <header id="banner"><h1>NEWS API</h1></header>
     <main>
       <p>
         This is the root of the api for our news website - here are the major
@@ -19,7 +20,7 @@
       </ul>
       <p>
         <h2>Topics</h2>
-        <section>Using a GET request will display each topic, with a description and an image url. </section>
+        <section>A list of topics with a description and an image url. </section>
       </p>
       <p>
         <h2>Users</h2>
@@ -30,8 +31,12 @@
         <section>A list of articles with various properties including a count of all comments</section>
       </p>
       <p>
-        <h2>Further endpoints for Articles</h2>
+        <h3>Further endpoints for Articles</h3>
         <section><ul><li>/articles/:id - using the article's numerical id to get a single article</li><li>/articles/:id/comments - using the article's numerical id to get the comments on a single article</li></ul></section>
+      </p>
+      <p>
+        <h3>Optional queries for Articles</h3>
+        <section><ul><li>sort_by - the column to sort the table by (defaults to created_at)</li><li>order - "asc" or "desc" for ascending or descending sort order (defaults to descending)</li><li>topics - a topic to filter the articles by</li></ul></section>
       </p>
     </main>
   </body>

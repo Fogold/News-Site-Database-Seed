@@ -2,8 +2,9 @@
 
 This project is a website where users can write articles and comment on each other's articles. It uses an MVC architecture and is built with the following technologies
 
-Frontend: React for GUI, Render for API hosting, Supabase for the online database.
-Backend: Javascript, Jest for Unit Testing, Supertest for Integration Testing, postgresql for local databases, express for API - all within the Node.js runtime environment.
+Frontend: React for GUI, Render for API hosting, Supabase for database hosting.
+
+Backend: Javascript, Jest for unit testing, Supertest for integration testing, postgresql for local databases, express for API - all within the Node.js runtime environment.
 
 Requires at least version 8.13.3 of postgresql. Built on Node v25.0.0.
 
