@@ -8,7 +8,7 @@ Backend: Javascript, Jest for unit testing, Supertest for integration testing, p
 
 Requires at least version 8.13.3 of postgresql. Built on Node v25.0.0.
 
-[Link to the project](https://news-site-database-seed.onrender.com/api/users)
+[Link to the project](https://news-site-database-seed.onrender.com)
 
 Follow these steps to use the seeds
 
