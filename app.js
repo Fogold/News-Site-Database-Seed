@@ -18,6 +18,7 @@ const {
 } = require("./errors.js");
 
 app.use(express.json());
+app.use(express.static("public"));
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);

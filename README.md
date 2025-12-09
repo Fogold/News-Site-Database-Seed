@@ -1,5 +1,14 @@
 **_README_**
 
+This project is a website where users can write articles and comment on each other's articles. It uses an MVC architecture and is built with the following technologies
+
+Frontend: React for GUI, Render for API hosting, Supabase for the online database.
+Backend: Javascript, Jest for Unit Testing, Supertest for Integration Testing, postgresql for local databases, express for API - all within the Node.js runtime environment.
+
+Requires at least version 8.13.3 of postgresql. Built on Node v25.0.0.
+
+[Link to the project](https://news-site-database-seed.onrender.com/api/users)
+
 Follow these steps to use the seeds
 
 1. Install all dependencies by entering "npm install" into the terminal once inside the repo.
