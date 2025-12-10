@@ -18,6 +18,7 @@
         <li>/users</li>
         <li>/articles</li>
       </ul>
+      <section id="sect">
       <p>
         <h2>Topics</h2>
         <section>A list of topics with a description and an image url. </section>
@@ -28,16 +29,21 @@
       </p>
       <p>
         <h2>Articles</h2>
-        <section>A list of articles with various properties including a count of all comments</section>
+        <section>A list of articles with various properties including a count of all comments. Articles can be patched to increase the votes by sending a javascript object with a key of "inc_votes" and a positive or negative number to increment or decrement the votes </section>
       </p>
       <p>
-        <h3>Further endpoints for Articles</h3>
-        <section><ul><li>/articles/:id - using the article's numerical id to get a single article</li><li>/articles/:id/comments - using the article's numerical id to get the comments on a single article</li></ul></section>
+        <h3>Articles by id</h3>
+        <section>/articles/:id - using the article's numerical id to get a single article</section>
+      </p>
+      <p>
+        <h3>Article comments</h3>
+        <section>/articles/:id/comments - a list of all the comments in a single article. Posting a comment requires a JavaScript object with a username (must be the username of an existing user in the database) and a body. </section>
       </p>
       <p>
         <h3>Optional queries for Articles</h3>
         <section><ul><li>sort_by - the column to sort the table by (defaults to created_at)</li><li>order - "asc" or "desc" for ascending or descending sort order (defaults to descending)</li><li>topics - a topic to filter the articles by</li></ul></section>
       </p>
+      </section>
     </main>
   </body>
 </html>
