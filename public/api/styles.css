@@ -2,9 +2,21 @@ h2 {
   color: red;
   background: yellow;
 }
-#banner {
-  font-size: 24px;
-}
-#sect {
+section {
   background: rgb(243, 255, 227);
+}
+header {
+  padding-left: 10px;
+  border: 3px solid black;
+}
+#title {
+  font-size: 60px;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-around;
+}
+img.resize {
+  width: 400px;
+  height: auto;
 }
