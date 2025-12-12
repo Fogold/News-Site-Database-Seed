@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { getTopics } = require("./controller/topics.controller.js");
 const {
   getArticles,
@@ -10,12 +11,13 @@ const {
   postComment,
   deleteComment,
 } = require("./controller/comments.controller.js");
-const app = express();
 const {
   badRequestHandler,
   serverErrorHandler,
   pageNotFoundHandler,
 } = require("./errors.js");
+
+const app = express();
 
 app.use(express.json());
 app.use(express.static("public"));

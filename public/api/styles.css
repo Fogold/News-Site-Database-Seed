@@ -14,8 +14,12 @@ header {
 #title {
   font-size: 60px;
 }
+
 #banner {
-  width: 400px;
+  display: flex;
+}
+
+.line {
+  margin-left: 5px;
   height: auto;
-  float: left;
 }

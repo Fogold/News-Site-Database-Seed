@@ -9,8 +9,8 @@ function extractUsers() {
 
   const allUsers = db.query(`SELECT * FROM users;`);
 
-  return Promise.all([commentsByTopic, allUsers])
-    .then(([commentsByTopic, allUsers]) => {
+  return Promise.all([commentsByTopic, allUsers]).then(
+    ([commentsByTopic, allUsers]) => {
       const favTopicsLookup = findFavouriteTopics(commentsByTopic.rows);
       allUsers.rows.forEach((user) => {
         if (favTopicsLookup[user.username]) {
@@ -20,10 +20,8 @@ function extractUsers() {
         }
       });
       return allUsers.rows;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    }
+  );
 }
 
 exports.extractUsers = extractUsers;

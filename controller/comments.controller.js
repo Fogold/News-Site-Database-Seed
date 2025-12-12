@@ -15,20 +15,21 @@ function getArticleComments(request, response) {
 }
 
 function postComment(request, response) {
-  const { body, params } = request;
-  if (!body.username || !body.body || isNaN(params["id"])) {
+  const { body } = request;
+  const { id } = request.params;
+  if (!body.username || !body.body || isNaN(id)) {
     return Promise.reject({ status: 400, msg: "Bad Request!" });
   }
-  return insertComment(params["id"], body).then((comment) => {
+  return insertComment(id, body).then((comment) => {
     response.status(201).send(comment);
   });
 }
 
 function deleteComment(request, response) {
-  const { params } = request;
+  const { comment_id } = request.params;
 
-  return killComment(params.comment_id).then(() => {
-    response.status(204).send("Deleted");
+  return killComment(comment_id).then(() => {
+    response.status(204).send();
   });
 }
 

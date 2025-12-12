@@ -4,17 +4,20 @@ const {
 } = require("./../model/articles.model.js");
 
 function getArticles(request, response) {
-  return extractArticles(request.params["id"], request.query).then((rows) => {
+  const { id } = request.params;
+  const { query } = request;
+  return extractArticles(id, query).then((rows) => {
     response.status(200).send({ articles: rows });
   });
 }
 
 function patchArticleVotes(request, response) {
-  const { body, params } = request;
-  if (isNaN(body.inc_votes) || body.inc_votes === 0 || isNaN(params.id)) {
+  const { inc_votes } = request.body;
+  const { id } = request.params;
+  if (isNaN(inc_votes) || inc_votes === 0 || isNaN(id)) {
     return Promise.reject({ status: 400, msg: "Bad Request!" });
   }
-  return updateArticleVotes(params.id, body.inc_votes).then((article) => {
+  return updateArticleVotes(id, inc_votes).then((article) => {
     response.status(202).send(article);
   });
 }

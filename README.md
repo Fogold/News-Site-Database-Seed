@@ -22,26 +22,16 @@ Follow these steps to use the seeds
 3. Decide a name for both your dev database and your test database - for example, "NEWS_DB" and "NEWS_DB_TEST"
 
 4. In the .env.test, write
-   `PGDATABASE = :your_test_database_here:`
+   `PGDATABASE = nc_news_test`
 
    In the .env.development, write
 
-   `PGDATABASE = :your_dev_database_here:`
+   `PGDATABASE = nc_news:`
 
-5. Create a file in the "db" folder called setup-dbs.sql and write the following code
+5. Inititalise the databases by entering "npm run setup-dbs"
 
-   ```
-   DROP DATABASE IF EXISTS :your_dev_database_here:;
-   CREATE DATABASE :your_dev_database_here:;
+6. To run the test seed and fill the test database, enter "npm run test-seed" into the terminal
 
-   DROP DATABASE IF EXISTS :your_test_database_here:;
-   CREATE DATABASE :your_test_database_here:;
-   ```
+7. Fill the dev database by entering "npm run seed-dev"
 
-6. Inititalise the databases by entering "npm run setup-dbs"
-
-7. To run the test seed and fill the test database, enter "npm run test-seed" into the terminal
-
-8. Fill the dev database by entering "npm run seed-dev"
-
-9. Databases are successfully seeded!
+8. Databases are successfully seeded!
