@@ -105,6 +105,28 @@ function isEmptyObject(obj) {
   return Object.keys(obj).length === 0;
 }
 
+function isValidComment(comment) {
+  return comment.body && comment.username ? true : false;
+}
+
+function rejectPromise(httpCode) {
+  let message;
+  switch (httpCode) {
+    case 400:
+      message = "Bad Request!";
+      break;
+    case 404:
+      message = "Not Found!";
+      break;
+    case 500:
+      message = "Server Error!";
+      break;
+    default:
+      break;
+  }
+  return Promise.reject({ status: httpCode, msg: message });
+}
+
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
 exports.addReactions = addReactions;
@@ -112,3 +134,5 @@ exports.findFavouriteTopics = findFavouriteTopics;
 exports.createColumnInsertionQuery = createColumnInsertionQuery;
 exports.addCommentCounts = addCommentCounts;
 exports.isEmptyObject = isEmptyObject;
+exports.isValidComment = isValidComment;
+exports.rejectPromise = rejectPromise;

@@ -4,6 +4,7 @@ const {
   findFavouriteTopics,
   createColumnInsertionQuery,
   addReactions,
+  isValidComment,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -495,5 +496,19 @@ describe("addReactions", () => {
         emoji: "happyface",
       });
     });
+  });
+});
+
+describe("isValidComment", () => {
+  test("returns a boolean", () => {
+    expect(typeof isValidComment({ body: "", username: "" })).toBe("boolean");
+  });
+  test("returns false if passed object does not contain body or username properties", () => {
+    expect(isValidComment({})).toBe(false);
+  });
+  test("returns true if comment contains a username and a body", () => {
+    expect(isValidComment({ username: "Joe", body: "Hello world!" })).toBe(
+      true
+    );
   });
 });

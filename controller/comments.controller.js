@@ -4,25 +4,26 @@ const {
   killComment,
 } = require("./../model/comments.model");
 
+const { isValidComment, rejectPromise } = require("./../utils.js");
+
 function getArticleComments(request, response) {
   const { id } = request.params;
-  if (isNaN(id)) {
-    return Promise.reject({ status: 400, msg: "Bad Request!" });
-  }
-  return extractArticleComments(id).then((rows) => {
-    response.status(200).send({ comments: rows });
-  });
+  return isNaN(id)
+    ? rejectPromise(400)
+    : extractArticleComments(id).then((rows) => {
+        response.status(200).send({ comments: rows });
+      });
 }
 
 function postComment(request, response) {
   const { body } = request;
   const { id } = request.params;
-  if (!body.username || !body.body || isNaN(id)) {
-    return Promise.reject({ status: 400, msg: "Bad Request!" });
-  }
-  return insertComment(id, body).then((comment) => {
-    response.status(201).send(comment);
-  });
+
+  return !isValidComment(body) || isNaN(id)
+    ? rejectPromise(400)
+    : insertComment(id, body).then((comment) => {
+        response.status(201).send(comment);
+      });
 }
 
 function deleteComment(request, response) {
