@@ -6,6 +6,7 @@ const {
   addReactions,
   isValidComment,
   isValidArticleRequest,
+  isValidVoteIncrement,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -545,5 +546,20 @@ describe("isValidArticleRequest", () => {
     };
     expect(isValidArticleRequest(1, queryObject)).toBe(true);
     expect(queryObject).toEqual({ topic: "mitch" });
+  });
+
+  describe("isValidVoteIncrement", () => {
+    test("returns a boolean", () => {
+      expect(typeof isValidVoteIncrement(1, {})).toBe("boolean");
+    });
+    test("returns false if id is not a number", () => {
+      expect(isValidVoteIncrement("NaN", 1)).toBe(false);
+    });
+    test("returns false if inc_votes is not a number", () => {
+      expect(isValidVoteIncrement(1, "NaN")).toBe(false);
+    });
+    test("returns false if inc_votes equals 0", () => {
+      expect(isValidVoteIncrement(1, 0)).toBe(false);
+    });
   });
 });

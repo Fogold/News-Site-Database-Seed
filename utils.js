@@ -152,6 +152,9 @@ function isValidArticleRequest(id, query) {
   return true;
 }
 
+function isValidVoteIncrement(id, inc_votes) {
+  return !isNaN(id) && !isNaN(inc_votes) && inc_votes !== 0;
+}
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
 exports.addReactions = addReactions;
@@ -162,3 +165,4 @@ exports.isEmptyObject = isEmptyObject;
 exports.isValidComment = isValidComment;
 exports.rejectPromise = rejectPromise;
 exports.isValidArticleRequest = isValidArticleRequest;
+exports.isValidVoteIncrement = isValidVoteIncrement;

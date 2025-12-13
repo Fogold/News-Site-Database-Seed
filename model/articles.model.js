@@ -1,6 +1,10 @@
 const { articleData } = require("../db/data/test-data/index.js");
 const db = require("./../db/connection.js");
-const { addCommentCounts, addReactions } = require("./../utils.js");
+const {
+  addCommentCounts,
+  addReactions,
+  rejectPromise,
+} = require("./../utils.js");
 
 function extractArticles(article_id, query) {
   const id = article_id || null;
@@ -38,13 +42,13 @@ function extractArticles(article_id, query) {
       articles = addReactions(articles, reactions.rows);
 
       if (articles.length === 0) {
-        return Promise.reject({ status: 404, msg: "Not Found!" });
+        return rejectPromise(404);
       }
 
       return articles;
     })
     .catch((err) => {
-      return Promise.reject({ status: 404, msg: "Not Found!" });
+      return rejectPromise(404);
     });
 }
 
@@ -56,12 +60,12 @@ function updateArticleVotes(id, voteIncrement) {
     )
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "Not Found!" });
+        return rejectPromise(404);
       }
       return rows[0];
     })
     .catch((err) => {
-      return Promise.reject({ status: 404, msg: "Not Found!" });
+      return rejectPromise(404);
     });
 }
 
