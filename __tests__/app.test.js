@@ -149,12 +149,12 @@ describe("Articles", () => {
       });
   });
 
-  test("Returns a 404 error if the column set as a sort_by query doesn't exist in the database", () => {
+  test("Returns a 400 error if the column set as a sort_by query doesn't exist in the database", () => {
     return request(app)
       .get("/api/articles?sort_by=non_existent_key&order=asc")
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Not Found!");
+        expect(body.msg).toBe("Bad Request!");
       });
   });
 

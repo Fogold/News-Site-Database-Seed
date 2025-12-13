@@ -124,7 +124,32 @@ function rejectPromise(httpCode) {
     default:
       break;
   }
+
   return Promise.reject({ status: httpCode, msg: message });
+}
+
+function isValidArticleRequest(id, query) {
+  const queries = { ...query };
+
+  const validSortColumns = {
+    article_id: true,
+    author: true,
+    topic: true,
+    title: true,
+    created_at: true,
+    votes: true,
+  };
+
+  if (!queries.sort_by) queries.sort_by = "created_at";
+  if (!queries.order) queries.order = "desc";
+
+  if (id && isNaN(id)) return false;
+
+  if (!validSortColumns[queries.sort_by]) return false;
+  if (queries.order !== "asc" && queries.order !== "desc") return false;
+  if (queries.topic && typeof queries.topic !== "string") return false;
+
+  return true;
 }
 
 exports.createLookupObject = createLookupObject;
@@ -136,3 +161,4 @@ exports.addCommentCounts = addCommentCounts;
 exports.isEmptyObject = isEmptyObject;
 exports.isValidComment = isValidComment;
 exports.rejectPromise = rejectPromise;
+exports.isValidArticleRequest = isValidArticleRequest;

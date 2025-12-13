@@ -5,6 +5,7 @@ const {
   createColumnInsertionQuery,
   addReactions,
   isValidComment,
+  isValidArticleRequest,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -510,5 +511,39 @@ describe("isValidComment", () => {
     expect(isValidComment({ username: "Joe", body: "Hello world!" })).toBe(
       true
     );
+  });
+});
+
+describe("isValidArticleRequest", () => {
+  test("returns a boolean", () => {
+    expect(typeof isValidArticleRequest()).toBe("boolean");
+  });
+  test("returns false when the passed id is not a number", () => {
+    expect(isValidArticleRequest("not a number")).toBe(false);
+  });
+  test("returns false when the sort by query is not a valid column to use", () => {
+    expect(isValidArticleRequest(1, { sort_by: "Invalid Column" })).toBe(false);
+  });
+  test("returns false when the order query is neither asc nor desc", () => {
+    expect(isValidArticleRequest(1, { order: "Invalid order" })).toBe(false);
+  });
+  test("returns false when the topic query is not a string", () => {
+    expect(isValidArticleRequest(1, { topic: 123 })).toBe(false);
+  });
+  test("returns true when all qualifiers are passed", () => {
+    expect(
+      isValidArticleRequest(1, {
+        sort_by: "created_at",
+        order: "asc",
+        topic: "mitch",
+      })
+    ).toBe(true);
+  });
+  test("test for mutation", () => {
+    const queryObject = {
+      topic: "mitch",
+    };
+    expect(isValidArticleRequest(1, queryObject)).toBe(true);
+    expect(queryObject).toEqual({ topic: "mitch" });
   });
 });

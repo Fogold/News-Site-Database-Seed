@@ -8,25 +8,6 @@ function extractArticles(article_id, query) {
   const column = query.sort_by || "created_at";
   const order = query.order || "desc";
 
-  const validColumns = {
-    article_id: true,
-    author: true,
-    topic: true,
-    title: true,
-    created_at: true,
-    votes: true,
-  };
-
-  if (id && isNaN(id)) {
-    return Promise.reject({ status: 400, msg: "Bad Request!" });
-  }
-  if (order && order !== "asc" && order !== "desc") {
-    return Promise.reject({ status: 400, msg: "Bad Request!" });
-  }
-  if (column && !validColumns[column]) {
-    return Promise.reject({ status: 404, msg: "Not Found!" });
-  }
-
   let parameters = null;
   let extraction = `SELECT author, title, article_id, topic, created_at, votes, article_img_url FROM articles`;
   if (id) {
