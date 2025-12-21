@@ -7,6 +7,7 @@ const {
   isValidComment,
   isValidArticleRequest,
   isValidVoteIncrement,
+  assignReactions,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -517,19 +518,16 @@ describe("isValidComment", () => {
 
 describe("isValidArticleRequest", () => {
   test("returns a boolean", () => {
-    expect(typeof isValidArticleRequest()).toBe("boolean");
-  });
-  test("returns false when the passed id is not a number", () => {
-    expect(isValidArticleRequest("not a number")).toBe(false);
+    expect(typeof isValidArticleRequest({})).toBe("boolean");
   });
   test("returns false when the sort by query is not a valid column to use", () => {
-    expect(isValidArticleRequest(1, { sort_by: "Invalid Column" })).toBe(false);
+    expect(isValidArticleRequest({ sort_by: "Invalid Column" })).toBe(false);
   });
   test("returns false when the order query is neither asc nor desc", () => {
-    expect(isValidArticleRequest(1, { order: "Invalid order" })).toBe(false);
+    expect(isValidArticleRequest({ order: "Invalid order" })).toBe(false);
   });
   test("returns false when the topic query is not a string", () => {
-    expect(isValidArticleRequest(1, { topic: 123 })).toBe(false);
+    expect(isValidArticleRequest({ topic: 123 })).toBe(false);
   });
   test("returns true when all qualifiers are passed", () => {
     expect(
@@ -544,7 +542,7 @@ describe("isValidArticleRequest", () => {
     const queryObject = {
       topic: "mitch",
     };
-    expect(isValidArticleRequest(1, queryObject)).toBe(true);
+    expect(isValidArticleRequest(queryObject)).toBe(true);
     expect(queryObject).toEqual({ topic: "mitch" });
   });
 
@@ -561,5 +559,349 @@ describe("isValidArticleRequest", () => {
     test("returns false if inc_votes equals 0", () => {
       expect(isValidVoteIncrement(1, 0)).toBe(false);
     });
+  });
+});
+
+describe("assignReactions", () => {
+  test("returns an array", () => {
+    expect(Array.isArray(assignReactions())).toBe(true);
+  });
+  test("returns an array of objects", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    expect(typeof assignReactions(input)[0]).toBe("object");
+  });
+  test("test for mutation of articles that are passed in", () => {
+    const article1 = {
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      author: "butter_bridge",
+      topic: "mitch",
+      created_at: "2020-07-09T20:11:00.000Z,",
+      votes: 100,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      count: "11",
+      info_type: "Article",
+    };
+    const article2 = {
+      article_id: 2,
+      title: "Sony Vaio; or, The Laptop",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "Call me Mitchell. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would buy a laptop about a little and see the codey part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to coding as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the laptop. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the the Vaio with me.",
+      created_at: new Date(1602828180000),
+      votes: 0,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      info_type: "Article",
+    };
+    expect(assignReactions([article1, article2])[0]).not.toBe(article1);
+    expect(assignReactions([article1, article2])[1]).not.toBe(article2);
+    expect(article1).toEqual({
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      author: "butter_bridge",
+      topic: "mitch",
+      created_at: "2020-07-09T20:11:00.000Z,",
+      votes: 100,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      count: "11",
+      info_type: "Article",
+    });
+    expect(article2).toEqual({
+      article_id: 2,
+      title: "Sony Vaio; or, The Laptop",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "Call me Mitchell. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would buy a laptop about a little and see the codey part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to coding as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the laptop. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the the Vaio with me.",
+      created_at: new Date(1602828180000),
+      votes: 0,
+      article_img_url:
+        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      info_type: "Article",
+    });
+  });
+  test("if reactions are passed in, check that no reaction objects are passed out", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    assignReactions(input).forEach((item) => {
+      expect(item.info_type).toBe("Article");
+    });
+  });
+  test("expect returned articles to have a reactions key with an array as a value", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    const result = assignReactions(input);
+    result.forEach((article) => {
+      expect(article).toHaveProperty("reactions");
+      expect(Array.isArray(article.reactions)).toBe(true);
+    });
+  });
+  test("If articles and reactions are put in, expect articles to have an array of reaction objects in it (containing username and emoji keys)", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    const result = assignReactions(input);
+    expect(result[0].reactions[0]).toHaveProperty("username");
+    expect(result[0].reactions[0]).toHaveProperty("emoji");
+  });
+  test("expect articles.reactions to have a reaction object with the correct username and emoji when one reaction/article is passed", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    const result = assignReactions(input);
+
+    expect(result[0].reactions[0]).toEqual({
+      emoji: "happyface",
+      username: "butter_bridge",
+    });
+  });
+  test("expect articles.reactions to have multiple objects within it when there are multiple reactions to the same article", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "laughingface",
+        author: "Jameson",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+    ];
+    const result = assignReactions(input);
+
+    expect(result[0].reactions).toEqual([
+      {
+        emoji: "happyface",
+        username: "butter_bridge",
+      },
+      { emoji: "laughingface", username: "Jameson" },
+    ]);
+  });
+  test("expect correct reactions to be assigned to correct articles when there are multiple reactions and multiple articles passed", () => {
+    const input = [
+      {
+        article_id: 1,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "laughingface",
+        author: "Jameson",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        author: "butter_bridge",
+        topic: "mitch",
+        created_at: "2020-07-09T20:11:00.000Z,",
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        count: "11",
+        info_type: "Article",
+      },
+      {
+        article_id: 2,
+        title: "Sony Vaio; or, The Laptop",
+        topic: "mitch",
+        author: "icellusedkars",
+        body: "Call me Mitchell. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would buy a laptop about a little and see the codey part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to coding as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the laptop. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the the Vaio with me.",
+        created_at: new Date(1602828180000),
+        votes: 0,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        info_type: "Article",
+      },
+      {
+        article_id: 2,
+        title: "happyface",
+        author: "butter_bridge",
+        topic: null,
+        created_at: null,
+        votes: null,
+        article_img_url: null,
+        count: null,
+        info_type: "Reaction",
+      },
+      {
+        article_id: 3,
+        title: "Eight pug gifs that remind me of mitch",
+        topic: "mitch",
+        author: "icellusedkars",
+        body: "some gifs",
+        created_at: new Date(1604394720000),
+        votes: 0,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        info_type: "Article",
+      },
+    ];
+    const result = assignReactions(input);
+
+    expect(result[0].reactions).toEqual([
+      {
+        emoji: "happyface",
+        username: "butter_bridge",
+      },
+      { emoji: "laughingface", username: "Jameson" },
+    ]);
+    expect(result[1].reactions).toEqual([
+      { emoji: "happyface", username: "butter_bridge" },
+    ]);
+    expect(result[2].reactions).toEqual([]);
   });
 });

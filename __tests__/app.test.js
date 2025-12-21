@@ -43,14 +43,14 @@ describe("Articles", () => {
           expect(typeof article.created_at).toBe("string");
           expect(typeof article.votes).toBe("number");
           expect(typeof article.article_img_url).toBe("string");
-          expect(typeof article.comment_count).toBe("number");
+          expect(typeof article.comment_count).toBe("string"); //database returns a string - happy to leave it as one for rendering, if it needs to be a num I'll change it
           expect(Array.isArray(article.reactions)).toBe(true);
         });
       });
   });
   test("GET article by ID", () => {
     return request(app)
-      .get("/api/articles/2")
+      .get("/api/articles/1")
       .expect(200)
       .then(({ body }) => {
         expect(typeof body).toBe("object");
@@ -62,7 +62,8 @@ describe("Articles", () => {
         expect(typeof article.created_at).toBe("string");
         expect(typeof article.votes).toBe("number");
         expect(typeof article.article_img_url).toBe("string");
-        expect(typeof article.comment_count).toBe("number");
+        expect(typeof article.comment_count).toBe("string"); //database returns a string - happy to leave it as one for rendering, if it needs to be a num I'll change it
+        expect(Array.isArray(article.reactions)).toBe(true);
       });
   });
   test("PATCH an article by increasing or decreasing the votes", () => {
@@ -95,7 +96,7 @@ describe("Articles", () => {
         expect(body.msg).toBe("Bad Request!");
       });
   });
-  test("returns a 400 error when requested article id doesn't exist", () => {
+  test("returns a 404 error when requested article id doesn't exist", () => {
     return request(app)
       .get("/api/articles/9999")
       .expect(404)

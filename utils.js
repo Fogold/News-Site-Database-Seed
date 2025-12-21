@@ -128,9 +128,7 @@ function rejectPromise(httpCode) {
   return Promise.reject({ status: httpCode, msg: message });
 }
 
-function isValidArticleRequest(id, query) {
-  const queries = { ...query };
-
+function isValidArticleRequest(query) {
   const validSortColumns = {
     article_id: true,
     author: true,
@@ -140,14 +138,10 @@ function isValidArticleRequest(id, query) {
     votes: true,
   };
 
-  if (!queries.sort_by) queries.sort_by = "created_at";
-  if (!queries.order) queries.order = "desc";
-
-  if (id && isNaN(id)) return false;
-
-  if (!validSortColumns[queries.sort_by]) return false;
-  if (queries.order !== "asc" && queries.order !== "desc") return false;
-  if (queries.topic && typeof queries.topic !== "string") return false;
+  if (query.sort_by && !validSortColumns[query.sort_by]) return false;
+  if (query.order && query.order !== "asc" && query.order !== "desc")
+    return false;
+  if (query.topic && typeof query.topic !== "string") return false;
 
   return true;
 }
@@ -155,6 +149,41 @@ function isValidArticleRequest(id, query) {
 function isValidVoteIncrement(id, inc_votes) {
   return !isNaN(id) && !isNaN(inc_votes) && inc_votes !== 0;
 }
+
+function assignReactions(rows) {
+  if (!rows) return [];
+
+  const reactions = rows.filter((item) => item.info_type === "Reaction");
+  const reactionLookup = {};
+
+  reactions.forEach((item) => {
+    let reaction = { username: item.author, emoji: item.title };
+    if (reactionLookup[item.article_id]) {
+      reactionLookup[item.article_id].push(reaction);
+    } else {
+      reactionLookup[item.article_id] = [reaction];
+    }
+  });
+
+  const returnArr = [];
+
+  for (const item of rows) {
+    if (item.info_type === "Article") {
+      let reaction = { ...item };
+
+      if (reactionLookup[reaction.article_id]) {
+        reaction.reactions = reactionLookup[reaction.article_id];
+      } else {
+        reaction.reactions = [];
+      }
+
+      returnArr.push(reaction);
+    }
+  }
+
+  return returnArr;
+}
+
 exports.createLookupObject = createLookupObject;
 exports.connectReactions = connectReactions;
 exports.addReactions = addReactions;
@@ -166,3 +195,4 @@ exports.isValidComment = isValidComment;
 exports.rejectPromise = rejectPromise;
 exports.isValidArticleRequest = isValidArticleRequest;
 exports.isValidVoteIncrement = isValidVoteIncrement;
+exports.assignReactions = assignReactions;

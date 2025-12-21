@@ -3,6 +3,7 @@ const express = require("express");
 const { getTopics } = require("./controller/topics.controller.js");
 const {
   getArticles,
+  getArticleById,
   patchArticleVotes,
 } = require("./controller/articles.controller.js");
 const { getUsers } = require("./controller/users.controller.js");
@@ -24,7 +25,7 @@ app.use(express.static("public"));
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
-app.get("/api/articles/:id", getArticles);
+app.get("/api/articles/:id", getArticleById);
 app.get("/api/articles/:id/comments", getArticleComments);
 app.get("/api/users", getUsers);
 app.post("/api/articles/:id/comments", postComment);
