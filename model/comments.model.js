@@ -1,9 +1,12 @@
 const db = require("./../db/connection.js");
 
-function extractArticleComments(id) {
+function extractArticleComments(id, query) {
+  const column = query.sort_by || "created_at";
+  const order = query.order || "desc";
+
   return db
     .query(
-      `SELECT comment_id, votes, created_at, author, body, article_id FROM comments WHERE article_id = $1 ORDER BY created_at DESC;`,
+      `SELECT comment_id, votes, created_at, author, body, article_id FROM comments WHERE article_id = $1 ORDER BY ${column} ${order};`,
       [id]
     )
     .then(({ rows }) => {

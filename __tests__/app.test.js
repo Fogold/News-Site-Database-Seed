@@ -234,6 +234,18 @@ describe("Comments", () => {
       });
   });
 
+  test("GET article comments can accept a query to sort by a particular column", () => {
+    return request(app)
+      .get("/api/articles/1/comments?sort_by=votes")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeSorted({
+          key: "votes",
+          descending: true,
+        });
+      });
+  });
+
   test("POST a comment onto an article", () => {
     const comment = { username: "lurker", body: "abcdefghijklmnopqrstuvwxyz" };
     return request(app)
@@ -251,6 +263,7 @@ describe("Comments", () => {
         expect(typeof postedComment.created_at).toBe("string");
       });
   });
+
   test("DELETE a comment by ID", () => {
     return request(app)
       .delete("/api/comments/1")

@@ -4,12 +4,17 @@ const {
   killComment,
 } = require("./../model/comments.model");
 
-const { isValidComment, rejectPromise } = require("./../utils.js");
+const {
+  isValidComment,
+  rejectPromise,
+  isValidCommentRequest,
+} = require("./../utils.js");
 
 function getArticleComments(request, response) {
   const { id } = request.params;
-  return !isNaN(id)
-    ? extractArticleComments(id).then((rows) => {
+  const { query } = request;
+  return isValidCommentRequest(id, query)
+    ? extractArticleComments(id, query).then((rows) => {
         response.status(200).send({ comments: rows });
       })
     : rejectPromise(400);

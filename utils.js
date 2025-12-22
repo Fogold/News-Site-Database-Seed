@@ -150,6 +150,23 @@ function isValidVoteIncrement(id, inc_votes) {
   return !isNaN(id) && !isNaN(inc_votes) && inc_votes !== 0;
 }
 
+function isValidCommentRequest(id, query) {
+  const validSortColumns = {
+    article_id: true,
+    author: true,
+    title: true,
+    created_at: true,
+    votes: true,
+  };
+
+  if (isNaN(id)) return false;
+  if (query.sort_by && !validSortColumns[query.sort_by]) return false;
+  if (query.order && query.order !== "asc" && query.order !== "desc")
+    return false;
+
+  return true;
+}
+
 function assignReactions(rows) {
   if (!rows) return [];
 
@@ -195,4 +212,5 @@ exports.isValidComment = isValidComment;
 exports.rejectPromise = rejectPromise;
 exports.isValidArticleRequest = isValidArticleRequest;
 exports.isValidVoteIncrement = isValidVoteIncrement;
+exports.isValidCommentRequest = isValidCommentRequest;
 exports.assignReactions = assignReactions;

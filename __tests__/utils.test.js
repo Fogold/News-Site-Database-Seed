@@ -7,6 +7,7 @@ const {
   isValidComment,
   isValidArticleRequest,
   isValidVoteIncrement,
+  isValidCommentRequest,
   assignReactions,
 } = require("../utils");
 
@@ -545,20 +546,37 @@ describe("isValidArticleRequest", () => {
     expect(isValidArticleRequest(queryObject)).toBe(true);
     expect(queryObject).toEqual({ topic: "mitch" });
   });
+});
 
-  describe("isValidVoteIncrement", () => {
-    test("returns a boolean", () => {
-      expect(typeof isValidVoteIncrement(1, {})).toBe("boolean");
-    });
-    test("returns false if id is not a number", () => {
-      expect(isValidVoteIncrement("NaN", 1)).toBe(false);
-    });
-    test("returns false if inc_votes is not a number", () => {
-      expect(isValidVoteIncrement(1, "NaN")).toBe(false);
-    });
-    test("returns false if inc_votes equals 0", () => {
-      expect(isValidVoteIncrement(1, 0)).toBe(false);
-    });
+describe("isValidVoteIncrement", () => {
+  test("returns a boolean", () => {
+    expect(typeof isValidVoteIncrement(1, {})).toBe("boolean");
+  });
+  test("returns false if id is not a number", () => {
+    expect(isValidVoteIncrement("NaN", 1)).toBe(false);
+  });
+  test("returns false if inc_votes is not a number", () => {
+    expect(isValidVoteIncrement(1, "NaN")).toBe(false);
+  });
+  test("returns false if inc_votes equals 0", () => {
+    expect(isValidVoteIncrement(1, 0)).toBe(false);
+  });
+});
+
+describe("isValidCommentRequest", () => {
+  test("returns a boolean", () => {
+    expect(typeof isValidCommentRequest()).toBe("boolean");
+  });
+  test("returns false if the id is not a number", () => {
+    expect(isValidCommentRequest("NaN")).toBe(false);
+  });
+  test("returns false if the sort_by column is not a valid column", () => {
+    expect(isValidCommentRequest(1, { sort_by: "false_column" })).toBe(false);
+  });
+  test("returns false if the order property of the query says something other than 'asc' or 'desc", () => {
+    expect(
+      isValidCommentRequest(1, { sort_by: "created_at", order: "invalid" })
+    ).toBe(false);
   });
 });
 
