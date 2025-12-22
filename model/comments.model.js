@@ -1,20 +1,20 @@
 const db = require("./../db/connection.js");
+const { createConditionals } = require("./../utils.js");
 
-function extractArticleComments(id, query) {
-  const column = query.sort_by || "created_at";
-  const order = query.order || "desc";
+function extractArticleComments(parameters) {
+  const { paramVars, filterStatement, orderStatement } =
+    createConditionals(parameters);
 
-  return db
-    .query(
-      `SELECT comment_id, votes, created_at, author, body, article_id FROM comments WHERE article_id = $1 ORDER BY ${column} ${order};`,
-      [id]
-    )
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return Promise.reject({ status: 400, msg: "Bad Request!" });
-      }
-      return rows;
-    });
+  const extraction = `SELECT comment_id, votes, created_at, author, body, article_id FROM comments 
+       ${filterStatement || ""} 
+       ${orderStatement};`;
+
+  return db.query(extraction, paramVars || null).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 400, msg: "Bad Request!" });
+    }
+    return rows;
+  });
 }
 
 function insertComment(id, comment) {

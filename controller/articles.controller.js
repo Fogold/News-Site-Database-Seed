@@ -6,15 +6,15 @@ const {
 
 const {
   rejectPromise,
-  isValidArticleRequest,
+  isValidRequest,
   isValidVoteIncrement,
 } = require("./../utils.js");
 
 function getArticles(request, response) {
   const { query } = request;
-
-  return isValidArticleRequest(query)
-    ? extractArticles(query).then((rows) => {
+  const parameters = { ...query };
+  return isValidRequest(parameters)
+    ? extractArticles(parameters).then((rows) => {
         response.status(200).send({ articles: rows });
       })
     : rejectPromise(400);

@@ -179,6 +179,18 @@ describe("Articles", () => {
       });
   });
 
+  test.only("GET articles of a particular author when one is put in the query", () => {
+    return request(app)
+      .get("/api/articles?author=icellusedkars")
+      .expect(200)
+      .then(({ body }) => {
+        body.articles.forEach((article) => {
+          expect(article.author).toBe("icellusedkars");
+        });
+        expect(body.articles.length).toBe(6);
+      });
+  });
+
   test("returns a 404 if the topic can't be found", () => {
     return request(app)
       .get("/api/articles?sort_by=article_id&order=desc&topic=false_topic")
@@ -234,7 +246,7 @@ describe("Comments", () => {
       });
   });
 
-  test("GET article comments can accept a query to sort by a particular column", () => {
+  test("GET article comments can accept a query to sort the data by a particular column", () => {
     return request(app)
       .get("/api/articles/1/comments?sort_by=votes")
       .expect(200)
@@ -242,6 +254,29 @@ describe("Comments", () => {
         expect(body.comments).toBeSorted({
           key: "votes",
           descending: true,
+        });
+      });
+  });
+
+  test("GET article comments can accept a query to sort the data ascending or descending", () => {
+    return request(app)
+      .get("/api/articles/1/comments?sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeSorted({
+          key: "votes",
+          descending: false,
+        });
+      });
+  });
+
+  test("GET article comments by a certain user when it's put in the query", () => {
+    return request(app)
+      .get("/api/articles/1/comments?author=icellusedkars")
+      .expect(200)
+      .then(({ body }) => {
+        body.comments.forEach((comment) => {
+          expect(comment.author).toBe("icellusedkars");
         });
       });
   });

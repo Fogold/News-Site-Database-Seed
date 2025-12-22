@@ -7,14 +7,15 @@ const {
 const {
   isValidComment,
   rejectPromise,
-  isValidCommentRequest,
+  isValidRequest,
 } = require("./../utils.js");
 
 function getArticleComments(request, response) {
   const { id } = request.params;
   const { query } = request;
-  return isValidCommentRequest(id, query)
-    ? extractArticleComments(id, query).then((rows) => {
+  const parameters = { id, ...query };
+  return isValidRequest(parameters)
+    ? extractArticleComments(parameters).then((rows) => {
         response.status(200).send({ comments: rows });
       })
     : rejectPromise(400);

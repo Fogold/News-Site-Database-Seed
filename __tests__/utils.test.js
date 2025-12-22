@@ -5,10 +5,10 @@ const {
   createColumnInsertionQuery,
   addReactions,
   isValidComment,
-  isValidArticleRequest,
+  isValidRequest,
   isValidVoteIncrement,
-  isValidCommentRequest,
   assignReactions,
+  createConditionals,
 } = require("../utils");
 
 describe("createLookupObject", () => {
@@ -517,22 +517,25 @@ describe("isValidComment", () => {
   });
 });
 
-describe("isValidArticleRequest", () => {
+describe("isValidRequest", () => {
   test("returns a boolean", () => {
-    expect(typeof isValidArticleRequest({})).toBe("boolean");
+    expect(typeof isValidRequest({})).toBe("boolean");
   });
   test("returns false when the sort by query is not a valid column to use", () => {
-    expect(isValidArticleRequest({ sort_by: "Invalid Column" })).toBe(false);
+    expect(isValidRequest({ sort_by: "Invalid Column" })).toBe(false);
   });
   test("returns false when the order query is neither asc nor desc", () => {
-    expect(isValidArticleRequest({ order: "Invalid order" })).toBe(false);
+    expect(isValidRequest({ order: "Invalid order" })).toBe(false);
   });
   test("returns false when the topic query is not a string", () => {
-    expect(isValidArticleRequest({ topic: 123 })).toBe(false);
+    expect(isValidRequest({ topic: 123 })).toBe(false);
+  });
+  test("returns false when the author query is not a string", () => {
+    expect(isValidRequest({ author: 123 })).toBe(false);
   });
   test("returns true when all qualifiers are passed", () => {
     expect(
-      isValidArticleRequest(1, {
+      isValidRequest(1, {
         sort_by: "created_at",
         order: "asc",
         topic: "mitch",
@@ -543,7 +546,7 @@ describe("isValidArticleRequest", () => {
     const queryObject = {
       topic: "mitch",
     };
-    expect(isValidArticleRequest(queryObject)).toBe(true);
+    expect(isValidRequest(queryObject)).toBe(true);
     expect(queryObject).toEqual({ topic: "mitch" });
   });
 });
@@ -560,23 +563,6 @@ describe("isValidVoteIncrement", () => {
   });
   test("returns false if inc_votes equals 0", () => {
     expect(isValidVoteIncrement(1, 0)).toBe(false);
-  });
-});
-
-describe("isValidCommentRequest", () => {
-  test("returns a boolean", () => {
-    expect(typeof isValidCommentRequest()).toBe("boolean");
-  });
-  test("returns false if the id is not a number", () => {
-    expect(isValidCommentRequest("NaN")).toBe(false);
-  });
-  test("returns false if the sort_by column is not a valid column", () => {
-    expect(isValidCommentRequest(1, { sort_by: "false_column" })).toBe(false);
-  });
-  test("returns false if the order property of the query says something other than 'asc' or 'desc", () => {
-    expect(
-      isValidCommentRequest(1, { sort_by: "created_at", order: "invalid" })
-    ).toBe(false);
   });
 });
 
@@ -921,5 +907,67 @@ describe("assignReactions", () => {
       { emoji: "happyface", username: "butter_bridge" },
     ]);
     expect(result[2].reactions).toEqual([]);
+  });
+});
+
+describe("createConditionals", () => {
+  test("returns an object", () => {
+    expect(typeof createConditionals({})).toBe("object");
+  });
+  test("returns an object with a orderStatement property with a default string in it", () => {
+    expect(createConditionals({})).toEqual({
+      orderStatement: "ORDER BY created_at DESC",
+    });
+  });
+  test("returns an object with an orderStatement that changes according to the passed parameters", () => {
+    const parameters = { sort_by: "votes", order: "asc" };
+    expect(createConditionals(parameters)).toEqual({
+      orderStatement: "ORDER BY votes asc",
+    });
+  });
+  test("if an id, topic or author is passed through, that value will be in an array under the paramVars key", () => {
+    const parameters = { topic: "mitch" };
+    expect(createConditionals(parameters)).toHaveProperty("paramVars", [
+      "mitch",
+    ]);
+  });
+  test("if more than one filter parameter is passed, all will be inside the paramVars array without there being undefined elements in the array", () => {
+    let parameters = { id: 1, topic: "mitch", author: "user" };
+    expect(createConditionals(parameters)).toHaveProperty("paramVars", [
+      1,
+      "mitch",
+      "user",
+    ]);
+    parameters = { topic: "mitch", author: "user" };
+    expect(createConditionals(parameters)).toHaveProperty("paramVars", [
+      "mitch",
+      "user",
+    ]);
+    parameters = { id: 1, author: "user" };
+    expect(createConditionals(parameters)).toHaveProperty("paramVars", [
+      1,
+      "user",
+    ]);
+  });
+  test("if one filter parameter is passed through, a syntatically correct WHERE statement will be inside filterStatement in the returned object", () => {
+    const parameters = { topic: "mitch" };
+    expect(createConditionals(parameters)).toHaveProperty(
+      "filterStatement",
+      "WHERE topic = $1"
+    );
+  });
+  test("if multiple filter parameters are passed through, a syntactically correct WHERE statement will be inside filterStatement in the returned object. The statement refers to the indexes of each parameter in paramVars", () => {
+    const parameters = { id: 1, topic: "mitch", author: "user" };
+    const result = createConditionals(parameters);
+    expect(result).toHaveProperty(
+      "filterStatement",
+      "WHERE article_id = $1 AND topic = $2 AND author = $3"
+    );
+    expect(result).toHaveProperty("paramVars", [1, "mitch", "user"]);
+  });
+  test("check for mutation", () => {
+    const parameters = { id: 1, topic: "mitch", author: "user" };
+    const result = createConditionals(parameters);
+    expect(parameters).toEqual({ id: 1, topic: "mitch", author: "user" });
   });
 });

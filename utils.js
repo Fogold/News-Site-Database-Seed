@@ -128,7 +128,8 @@ function rejectPromise(httpCode) {
   return Promise.reject({ status: httpCode, msg: message });
 }
 
-function isValidArticleRequest(query) {
+function isValidRequest(parameters) {
+  const { sort_by, order, topic, author, id } = parameters;
   const validSortColumns = {
     article_id: true,
     author: true,
@@ -138,33 +139,17 @@ function isValidArticleRequest(query) {
     votes: true,
   };
 
-  if (query.sort_by && !validSortColumns[query.sort_by]) return false;
-  if (query.order && query.order !== "asc" && query.order !== "desc")
-    return false;
-  if (query.topic && typeof query.topic !== "string") return false;
+  if (id && isNaN(id)) return false;
+  if (sort_by && !validSortColumns[sort_by]) return false;
+  if (order && order !== "asc" && order !== "desc") return false;
+  if (topic && typeof topic !== "string") return false;
+  if (author && typeof author !== "string") return false;
 
   return true;
 }
 
 function isValidVoteIncrement(id, inc_votes) {
   return !isNaN(id) && !isNaN(inc_votes) && inc_votes !== 0;
-}
-
-function isValidCommentRequest(id, query) {
-  const validSortColumns = {
-    article_id: true,
-    author: true,
-    title: true,
-    created_at: true,
-    votes: true,
-  };
-
-  if (isNaN(id)) return false;
-  if (query.sort_by && !validSortColumns[query.sort_by]) return false;
-  if (query.order && query.order !== "asc" && query.order !== "desc")
-    return false;
-
-  return true;
 }
 
 function assignReactions(rows) {
@@ -186,19 +171,48 @@ function assignReactions(rows) {
 
   for (const item of rows) {
     if (item.info_type === "Article") {
-      let reaction = { ...item };
+      let article = { ...item };
 
-      if (reactionLookup[reaction.article_id]) {
-        reaction.reactions = reactionLookup[reaction.article_id];
+      if (reactionLookup[article.article_id]) {
+        article.reactions = reactionLookup[article.article_id];
       } else {
-        reaction.reactions = [];
+        article.reactions = [];
       }
-
-      returnArr.push(reaction);
+      returnArr.push(article);
     }
   }
 
   return returnArr;
+}
+
+function createConditionals(parameters) {
+  const { topic, author, id, order, sort_by } = parameters;
+
+  const orderStatement = `ORDER BY ${sort_by || "created_at"} ${
+    order || "DESC"
+  }`;
+
+  const potentialVars = [id, topic, author];
+
+  const paramVars = potentialVars.filter((item) => item);
+
+  if (paramVars.length === 0) return { orderStatement };
+
+  const filters = { article_id: id, topic, author };
+
+  let filterStatement = "";
+
+  for (const item in filters) {
+    let itemIndex = paramVars.indexOf(filters[item]);
+    if (itemIndex === 0) {
+      filterStatement = `WHERE ${item} = $1` + filterStatement;
+    }
+    if (itemIndex > 0) {
+      filterStatement = filterStatement + ` AND ${item} = $${itemIndex + 1}`;
+    }
+  }
+
+  return { orderStatement, paramVars, filterStatement };
 }
 
 exports.createLookupObject = createLookupObject;
@@ -210,7 +224,7 @@ exports.addCommentCounts = addCommentCounts;
 exports.isEmptyObject = isEmptyObject;
 exports.isValidComment = isValidComment;
 exports.rejectPromise = rejectPromise;
-exports.isValidArticleRequest = isValidArticleRequest;
+exports.isValidRequest = isValidRequest;
 exports.isValidVoteIncrement = isValidVoteIncrement;
-exports.isValidCommentRequest = isValidCommentRequest;
 exports.assignReactions = assignReactions;
+exports.createConditionals = createConditionals;
