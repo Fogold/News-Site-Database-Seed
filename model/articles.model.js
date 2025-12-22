@@ -9,8 +9,7 @@ const {
 function extractArticles(parameters) {
   let { paramVars, filterStatement, orderStatement } =
     createConditionals(parameters);
-
-  if (filterStatement.includes("author")) {
+  if (filterStatement && filterStatement.includes("author")) {
     authorIndex = filterStatement.indexOf("author");
     filterStatement =
       filterStatement.slice(0, authorIndex) +
@@ -18,7 +17,7 @@ function extractArticles(parameters) {
       filterStatement.slice(authorIndex);
   }
 
-  let extraction = `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id) AS comment_count, 'Article' AS info_type FROM articles
+  const extraction = `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id) AS comment_count, 'Article' AS info_type FROM articles
      LEFT JOIN comments ON articles.article_id = comments.article_id
      ${filterStatement || ""}
      GROUP BY articles.article_id

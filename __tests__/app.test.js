@@ -179,7 +179,7 @@ describe("Articles", () => {
       });
   });
 
-  test.only("GET articles of a particular author when one is put in the query", () => {
+  test("GET articles of a particular author when one is put in the query", () => {
     return request(app)
       .get("/api/articles?author=icellusedkars")
       .expect(200)
