@@ -35,7 +35,7 @@ function patchArticleVotes(request, response) {
 
   return isValidVoteIncrement(id, inc_votes)
     ? updateArticleVotes(id, inc_votes).then((article) => {
-        response.status(202).send(article);
+        response.status(202).send({ articles: article });
       })
     : rejectPromise(400);
 }

@@ -21,7 +21,7 @@ function postComment(request, response) {
 
   return isValidComment(body) || isNaN(id)
     ? insertComment(id, body).then((comment) => {
-        response.status(201).send(comment);
+        response.status(201).send({ comments: comment });
       })
     : rejectPromise(400);
 }

@@ -76,7 +76,7 @@ describe("Articles", () => {
           .send({ inc_votes: 5 })
           .expect(202)
           .then(({ body }) => {
-            const article = body;
+            const article = body.articles;
             expect(typeof article).toBe("object");
             expect(typeof article.author).toBe("string");
             expect(typeof article.title).toBe("string");
@@ -241,13 +241,14 @@ describe("Comments", () => {
       .send(comment)
       .expect(201)
       .then(({ body }) => {
-        expect(typeof body).toBe("object");
-        expect(typeof body.comment_id).toBe("number");
-        expect(typeof body.article_id).toBe("number");
-        expect(typeof body.author).toBe("string");
-        expect(typeof body.body).toBe("string");
-        expect(typeof body.votes).toBe("number");
-        expect(typeof body.created_at).toBe("string");
+        const postedComment = body.comments;
+        expect(typeof postedComment).toBe("object");
+        expect(typeof postedComment.comment_id).toBe("number");
+        expect(typeof postedComment.article_id).toBe("number");
+        expect(typeof postedComment.author).toBe("string");
+        expect(typeof postedComment.body).toBe("string");
+        expect(typeof postedComment.votes).toBe("number");
+        expect(typeof postedComment.created_at).toBe("string");
       });
   });
   test("DELETE a comment by ID", () => {
