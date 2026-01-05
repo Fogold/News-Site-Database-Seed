@@ -533,6 +533,9 @@ describe("isValidRequest", () => {
   test("returns false when the author query is not a string", () => {
     expect(isValidRequest({ author: 123 })).toBe(false);
   });
+  test("returns false when the username query is not a string", () => {
+    expect(isValidRequest({ username: 123 })).toBe(false);
+  });
   test("returns true when all qualifiers are passed", () => {
     expect(
       isValidRequest(1, {

@@ -9,6 +9,7 @@ const {
 function extractArticles(parameters) {
   let { paramVars, filterStatement, orderStatement } =
     createConditionals(parameters);
+
   if (filterStatement && filterStatement.includes("author")) {
     authorIndex = filterStatement.indexOf("author");
     filterStatement =
@@ -61,7 +62,7 @@ function updateArticleVotes(id, voteIncrement) {
       if (rows.length === 0) return rejectPromise(404);
       return rows[0];
     })
-    .catch((err) => {
+    .catch(() => {
       return rejectPromise(404);
     });
 }

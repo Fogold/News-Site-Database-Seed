@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const { getTopics } = require("./controller/topics.controller.js");
 const {
@@ -20,16 +21,22 @@ const {
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
 app.get("/api/topics", getTopics);
+
 app.get("/api/articles", getArticles);
 app.get("/api/articles/:id", getArticleById);
 app.get("/api/articles/:id/comments", getArticleComments);
-app.get("/api/users", getUsers);
 app.post("/api/articles/:id/comments", postComment);
+
+app.get("/api/users", getUsers);
+app.get("/api/users/:username", getUsers);
+
 app.patch("/api/articles/:id", patchArticleVotes);
+
 app.delete("/api/comments/:comment_id", deleteComment);
 
 app.use(badRequestHandler);

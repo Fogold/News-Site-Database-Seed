@@ -129,7 +129,7 @@ function rejectPromise(httpCode) {
 }
 
 function isValidRequest(parameters) {
-  const { sort_by, order, topic, author, id } = parameters;
+  const { sort_by, order, topic, author, username, id } = parameters;
   const validSortColumns = {
     article_id: true,
     author: true,
@@ -144,6 +144,7 @@ function isValidRequest(parameters) {
   if (order && order !== "asc" && order !== "desc") return false;
   if (topic && typeof topic !== "string") return false;
   if (author && typeof author !== "string") return false;
+  if (username && typeof username !== "string") return false;
 
   return true;
 }
@@ -192,9 +193,7 @@ function createConditionals(parameters) {
     order || "DESC"
   }`;
 
-  const potentialVars = [id, topic, author];
-
-  const paramVars = potentialVars.filter((item) => item);
+  const paramVars = [id, topic, author].filter((item) => item);
 
   if (paramVars.length === 0) return { orderStatement };
 

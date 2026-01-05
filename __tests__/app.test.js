@@ -225,6 +225,16 @@ describe("Users", () => {
         });
       });
   });
+  test("GET a single user when their username is written as the request endpoint", () => {
+    return request(app)
+      .get("/api/users/icellusedkars")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users.length).toBe(1);
+        const user = body.users[0];
+        expect(user).toHaveProperty("username", "icellusedkars");
+      });
+  });
 });
 
 describe("Comments", () => {
