@@ -12,7 +12,7 @@ Requires at least version 8.13.3 of postgresql. Built on Node v25.0.0.
 
 Follow these steps to use the seeds
 
-1. Install all dependencies by entering "npm install" into the terminal once inside the repo.
+1. Install dependencies by entering "npm install" into the terminal once you have changed the repo root to be your working directory.
 
 2. In the root folder of the repo, create the following two files
 
