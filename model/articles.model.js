@@ -36,12 +36,12 @@ function extractArticles(parameters) {
 function extractArticleById(id) {
   return db
     .query(
-      `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id) AS comment_count, 'Article' AS info_type FROM articles
+      `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.body, articles.votes, article_img_url, COUNT(comment_id) AS comment_count, 'Article' AS info_type FROM articles
      JOIN comments ON articles.article_id = comments.article_id
      WHERE articles.article_id = $1
      GROUP BY articles.article_id
      UNION
-     SELECT emoji_article_user.article_id, emojis.emoji, emoji_article_user.username, NULL::varchar(255) AS topic, NULL::timestamp AS created_at, NULL::int AS votes, NULL::varchar(1000) AS article_img_url, NULL::BIGINT AS comment_count, 'Reaction' AS info_type FROM emoji_article_user
+     SELECT emoji_article_user.article_id, emojis.emoji, emoji_article_user.username, NULL::varchar(255) AS topic, NULL::timestamp AS created_at, NULL::text AS body, NULL::int AS votes, NULL::varchar(1000) AS article_img_url, NULL::BIGINT AS comment_count, 'Reaction' AS info_type FROM emoji_article_user
      JOIN emojis ON emoji_article_user.emoji_id = emojis.emoji_id
      WHERE emoji_article_user.article_id = $1;`,
       [id]
