@@ -39,6 +39,22 @@ function killComment(comment_id) {
     });
 }
 
+function updateCommentVotes(id, voteIncrement) {
+  return db
+    .query(
+      `UPDATE comments SET votes = comments.votes + $1 WHERE comment_id = $2 RETURNING *;`,
+      [voteIncrement, id]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) return rejectPromise(404);
+      return rows[0];
+    })
+    .catch(() => {
+      return rejectPromise(404);
+    });
+}
+
 exports.extractArticleComments = extractArticleComments;
 exports.insertComment = insertComment;
 exports.killComment = killComment;
+exports.updateCommentVotes = updateCommentVotes;

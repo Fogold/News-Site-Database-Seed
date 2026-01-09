@@ -322,6 +322,16 @@ describe("Comments", () => {
         return;
       });
   });
+
+  test("PATCH a comments votes by increasing or decreasing", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({ inc_votes: 1 })
+      .expect(202)
+      .then(({ rows }) => {
+        expect(rows.votes).toBe(17);
+      });
+  });
   test("returns a 400 error when requested comments are from an invalid/non existent article", () => {
     return request(app)
       .get("/api/articles/9999/comments")

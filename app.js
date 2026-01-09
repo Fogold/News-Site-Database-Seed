@@ -12,6 +12,7 @@ const {
   getArticleComments,
   postComment,
   deleteComment,
+  patchCommentVotes,
 } = require("./controller/comments.controller.js");
 const {
   badRequestHandler,
@@ -38,6 +39,7 @@ app.get("/api/users/:username", getUsers);
 app.patch("/api/articles/:id", patchArticleVotes);
 
 app.delete("/api/comments/:comment_id", deleteComment);
+app.patch("/api/comments/:comment_id", patchCommentVotes);
 
 app.use(badRequestHandler);
 app.use(pageNotFoundHandler);

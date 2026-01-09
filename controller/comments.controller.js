@@ -2,12 +2,14 @@ const {
   extractArticleComments,
   insertComment,
   killComment,
+  updateCommentVotes,
 } = require("./../model/comments.model");
 
 const {
   isValidComment,
   rejectPromise,
   isValidRequest,
+  isValidVoteIncrement,
 } = require("./../utils.js");
 
 function getArticleComments(request, response) {
@@ -40,6 +42,18 @@ function deleteComment(request, response) {
   });
 }
 
+function patchCommentVotes(request, response) {
+  const { id } = request.params;
+  const { inc_votes } = request.body;
+
+  return isValidVoteIncrement(id, inc_votes)
+    ? updateCommentVotes(id, inc_votes).then((comment) => {
+        response.status(202).send({ comments: comment });
+      })
+    : rejectPromise(400);
+}
+
 exports.getArticleComments = getArticleComments;
 exports.postComment = postComment;
 exports.deleteComment = deleteComment;
+exports.patchCommentVotes = patchCommentVotes;
